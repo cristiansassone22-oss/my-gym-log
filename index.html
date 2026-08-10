@@ -1,0 +1,1128 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>My Gym Log</title>
+
+<style>
+:root{
+  --bg:#0a0d12;
+  --card:#151922;
+  --card2:#1d2330;
+  --border:#2a3241;
+  --text:#f5f7fa;
+  --muted:#949eae;
+  --blue:#4c7dff;
+  --green:#20c777;
+  --red:#ff5b67;
+}
+
+*{box-sizing:border-box}
+
+body{
+  margin:0;
+  background:var(--bg);
+  color:var(--text);
+  font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+}
+
+header{
+  max-width:720px;
+  margin:auto;
+  padding:24px 18px 10px;
+}
+
+h1{
+  margin:0;
+  font-size:23px;
+}
+
+header p{
+  margin:5px 0;
+  color:var(--muted);
+  font-size:13px;
+}
+
+main{
+  max-width:720px;
+  margin:auto;
+  padding:10px 15px 100px;
+}
+
+.tabs{
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:8px;
+  margin:15px 0 20px;
+}
+
+.tabs button{
+  background:var(--card);
+  color:var(--muted);
+  border:1px solid var(--border);
+  border-radius:13px;
+  padding:13px 5px;
+  font-weight:800;
+}
+
+.tabs button.active{
+  background:var(--blue);
+  color:white;
+  border-color:var(--blue);
+}
+
+.titleBox{
+  background:linear-gradient(135deg,#233157,#111722);
+  border:1px solid #303c58;
+  padding:18px;
+  border-radius:18px;
+  margin-bottom:15px;
+}
+
+.titleBox small{
+  color:#8daaff;
+  font-weight:800;
+}
+
+.titleBox h2{
+  margin:5px 0 3px;
+}
+
+.titleBox p{
+  margin:0;
+  color:var(--muted);
+}
+
+.exercise{
+  background:var(--card);
+  border:1px solid var(--border);
+  border-radius:19px;
+  margin-bottom:14px;
+  overflow:hidden;
+}
+
+.exercisePhoto{
+  width:100%;
+  height:180px;
+  object-fit:cover;
+  display:block;
+  background:#222;
+}
+
+.exerciseBody{
+  padding:15px;
+}
+
+.exerciseTop{
+  display:flex;
+  justify-content:space-between;
+  gap:10px;
+}
+
+.exercise h3{
+  margin:0;
+  font-size:18px;
+}
+
+.prescription{
+  color:#9bb2ff;
+  font-size:12px;
+  white-space:nowrap;
+}
+
+.last{
+  color:var(--muted);
+  font-size:12px;
+  margin-top:5px;
+  margin-bottom:13px;
+}
+
+.set{
+  display:grid;
+  grid-template-columns:38px 1fr 1fr;
+  gap:8px;
+  margin-bottom:8px;
+  align-items:center;
+}
+
+.set span{
+  text-align:center;
+  color:var(--muted);
+  font-size:12px;
+}
+
+input{
+  width:100%;
+  border-radius:11px;
+  border:1px solid #323a4a;
+  background:#0d1118;
+  color:white;
+  padding:12px 10px;
+  font-size:16px;
+}
+
+.exerciseButtons{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:8px;
+  margin-top:12px;
+}
+
+.exerciseButtons button{
+  border:0;
+  border-radius:11px;
+  padding:11px;
+  font-weight:800;
+}
+
+.lastButton{
+  background:#262d3a;
+  color:white;
+}
+
+.timerButton{
+  background:#193c2b;
+  color:#75eda8;
+}
+
+.save{
+  position:fixed;
+  bottom:15px;
+  left:50%;
+  transform:translateX(-50%);
+  width:calc(100% - 30px);
+  max-width:690px;
+  border:0;
+  background:var(--blue);
+  color:white;
+  padding:16px;
+  border-radius:15px;
+  font-weight:900;
+  font-size:15px;
+  box-shadow:0 10px 30px rgba(0,0,0,.45);
+}
+
+#timer{
+  display:none;
+  position:fixed;
+  top:15px;
+  left:50%;
+  transform:translateX(-50%);
+  background:var(--blue);
+  color:white;
+  border-radius:18px;
+  padding:12px 22px;
+  z-index:100;
+  box-shadow:0 8px 35px rgba(0,0,0,.5);
+  text-align:center;
+}
+
+#timer strong{
+  display:block;
+  font-size:27px;
+}
+
+#timer small{
+  opacity:.8;
+}
+
+#toast{
+  opacity:0;
+  pointer-events:none;
+  position:fixed;
+  bottom:85px;
+  left:50%;
+  transform:translateX(-50%);
+  background:var(--green);
+  color:#05160d;
+  padding:11px 20px;
+  border-radius:100px;
+  font-weight:900;
+  transition:.2s;
+}
+
+#toast.show{opacity:1}
+
+@media(min-width:700px){
+  .exercisePhoto{
+    height:240px;
+  }
+}
+</style>
+</head>
+
+<body>
+
+<header>
+  <h1>MY GYM LOG</h1>
+  <p>Allenamento • carichi • ripetizioni • timer</p>
+</header>
+
+<main>
+
+<div class="tabs">
+  <button id="tabA" onclick="openDay('A')">GIORNO A</button>
+  <button id="tabB" onclick="openDay('B')">GIORNO B</button>
+  <button id="tabC" onclick="openDay('C')">GIORNO C</button>
+</div>
+
+<div id="content"></div>
+
+</main>
+
+
+<div style="
+position:fixed;
+bottom:78px;
+left:50%;
+transform:translateX(-50%);
+width:calc(100% - 30px);
+max-width:690px;
+display:grid;
+grid-template-columns:1fr 1fr;
+gap:8px;
+z-index:50;
+">
+<button id="navHistory" onclick="showHistory()" style="
+padding:13px;
+border-radius:13px;
+border:1px solid #2a3241;
+background:#151922;
+color:white;
+font-weight:800;
+">STORICO</button>
+
+<button id="navProgress" onclick="showProgress()" style="
+padding:13px;
+border-radius:13px;
+border:1px solid #2a3241;
+background:#151922;
+color:white;
+font-weight:800;
+">PROGRESSI</button>
+</div>
+
+<button class="save" onclick="saveWorkout()">
+SALVA ALLENAMENTO
+</button>
+
+
+<div id="timer">
+  <small>RECUPERO</small>
+  <strong id="timerText">1:30</strong>
+</div>
+
+<div id="toast"></div>
+
+<script>
+
+const workouts = {
+
+A:{
+ title:"Giorno A",
+ subtitle:"Petto • Spalle • Tricipiti",
+ exercises:[
+
+  {
+   name:"Panca piana bilanciere",
+   prescription:"4 × 6-8",
+   sets:4,
+   rest:120,
+   photo:"https://loremflickr.com/800/450/benchpress,gym?lock=11"
+  },
+
+  {
+   name:"Panca inclinata manubri",
+   prescription:"3 × 8-10",
+   sets:3,
+   rest:90,
+   photo:"https://loremflickr.com/800/450/dumbbell,benchpress,gym?lock=12"
+  },
+
+  {
+   name:"Croci ai cavi",
+   prescription:"3 × 12-15",
+   sets:3,
+   rest:60,
+   photo:"https://loremflickr.com/800/450/cable,chest,gym?lock=13"
+  },
+
+  {
+   name:"Shoulder Press",
+   prescription:"3 × 8-10",
+   sets:3,
+   rest:90,
+   photo:"https://loremflickr.com/800/450/shoulderpress,gym?lock=14"
+  },
+
+  {
+   name:"Alzate laterali",
+   prescription:"3 × 15",
+   sets:3,
+   rest:60,
+   photo:"https://loremflickr.com/800/450/lateralraise,dumbbell,gym?lock=15"
+  },
+
+  {
+   name:"Pushdown ai cavi",
+   prescription:"3 × 10-12",
+   sets:3,
+   rest:60,
+   photo:"https://loremflickr.com/800/450/triceps,cable,gym?lock=16"
+  },
+
+  {
+   name:"French Press EZ",
+   prescription:"3 × 10-12",
+   sets:3,
+   rest:60,
+   photo:"https://loremflickr.com/800/450/triceps,barbell,gym?lock=17"
+  }
+
+ ]
+},
+
+B:{
+ title:"Giorno B",
+ subtitle:"Schiena • Bicipiti • Addome",
+ exercises:[
+
+  {
+   name:"Lat Machine",
+   prescription:"4 × 8-10",
+   sets:4,
+   rest:90,
+   photo:"https://loremflickr.com/800/450/latpulldown,gym?lock=21"
+  },
+
+  {
+   name:"Rematore macchina",
+   prescription:"3 × 10",
+   sets:3,
+   rest:90,
+   photo:"https://loremflickr.com/800/450/rowing,machine,gym?lock=22"
+  },
+
+  {
+   name:"Pulley basso",
+   prescription:"3 × 10-12",
+   sets:3,
+   rest:75,
+   photo:"https://loremflickr.com/800/450/seatedrow,gym?lock=23"
+  },
+
+  {
+   name:"Face Pull",
+   prescription:"3 × 15",
+   sets:3,
+   rest:60,
+   photo:"https://loremflickr.com/800/450/cable,shoulder,gym?lock=24"
+  },
+
+  {
+   name:"Curl bilanciere EZ",
+   prescription:"3 × 8-10",
+   sets:3,
+   rest:75,
+   photo:"https://loremflickr.com/800/450/barbell,curl,gym?lock=25"
+  },
+
+  {
+   name:"Curl inclinato manubri",
+   prescription:"3 × 10-12",
+   sets:3,
+   rest:60,
+   photo:"https://loremflickr.com/800/450/dumbbell,curl,gym?lock=26"
+  },
+
+  {
+   name:"Hammer Curl",
+   prescription:"2 × 12",
+   sets:2,
+   rest:60,
+   photo:"https://loremflickr.com/800/450/hammer,curl,gym?lock=27"
+  },
+
+  {
+   name:"Crunch ai cavi",
+   prescription:"3 × 15",
+   sets:3,
+   rest:45,
+   photo:"https://loremflickr.com/800/450/abs,cable,gym?lock=28"
+  },
+
+  {
+   name:"Plank",
+   prescription:"3 × 45-60 sec",
+   sets:3,
+   rest:45,
+   photo:"https://loremflickr.com/800/450/plank,fitness?lock=29"
+  }
+
+ ]
+},
+
+C:{
+ title:"Giorno C",
+ subtitle:"Gambe • Spalle • Addome",
+ exercises:[
+
+  {
+   name:"Squat / Multipower",
+   prescription:"4 × 8",
+   sets:4,
+   rest:120,
+   photo:"https://loremflickr.com/800/450/squat,gym?lock=31"
+  },
+
+  {
+   name:"Leg Press",
+   prescription:"4 × 10",
+   sets:4,
+   rest:90,
+   photo:"https://loremflickr.com/800/450/legpress,gym?lock=32"
+  },
+
+  {
+   name:"Leg Curl",
+   prescription:"3 × 12",
+   sets:3,
+   rest:75,
+   photo:"https://loremflickr.com/800/450/legcurl,gym?lock=33"
+  },
+
+  {
+   name:"Leg Extension",
+   prescription:"3 × 12",
+   sets:3,
+   rest:75,
+   photo:"https://loremflickr.com/800/450/legextension,gym?lock=34"
+  },
+
+  {
+   name:"Calf Raise",
+   prescription:"4 × 15-20",
+   sets:4,
+   rest:60,
+   photo:"https://loremflickr.com/800/450/calfraise,gym?lock=35"
+  },
+
+  {
+   name:"Alzate laterali",
+   prescription:"3 × 15",
+   sets:3,
+   rest:60,
+   photo:"https://loremflickr.com/800/450/lateralraise,gym?lock=36"
+  },
+
+  {
+   name:"Leg Raise",
+   prescription:"3 × 15",
+   sets:3,
+   rest:45,
+   photo:"https://loremflickr.com/800/450/legraise,abs?lock=37"
+  },
+
+  {
+   name:"Crunch macchina",
+   prescription:"3 × 20",
+   sets:3,
+   rest:45,
+   photo:"https://loremflickr.com/800/450/abdominal,gym?lock=38"
+  }
+
+ ]
+}
+
+};
+
+let currentDay="A";
+let timerInterval=null;
+
+
+/* ELIMINA VECCHIA CACHE */
+if("serviceWorker" in navigator){
+ navigator.serviceWorker.getRegistrations().then(regs=>{
+  regs.forEach(r=>r.unregister());
+ });
+}
+
+if("caches" in window){
+ caches.keys().then(keys=>{
+  keys.forEach(k=>caches.delete(k));
+ });
+}
+
+
+/* APRE IL GIORNO */
+
+function openDay(day){
+
+ currentDay=day;
+
+ document.querySelectorAll(".tabs button")
+  .forEach(b=>b.classList.remove("active"));
+
+ document.getElementById("tab"+day)
+  .classList.add("active");
+
+ render();
+
+}
+
+
+/* CERCA ULTIMO CARICO */
+
+function getLastWeight(name){
+
+ const history=
+ JSON.parse(
+  localStorage.getItem("gymHistory") || "[]"
+ );
+
+ for(const session of history){
+
+  const exercise=
+  session.exercises.find(
+   e=>e.name===name
+  );
+
+  if(!exercise) continue;
+
+  const weights=
+  exercise.sets
+   .map(s=>parseFloat(s.kg))
+   .filter(n=>!isNaN(n));
+
+  if(weights.length)
+   return weights[0];
+
+ }
+
+ return null;
+}
+
+
+/* RENDER */
+
+function render(){
+
+ const workout=workouts[currentDay];
+
+ const content=
+ document.getElementById("content");
+
+ content.innerHTML=`
+
+ <div class="titleBox">
+
+  <small>ALLENAMENTO</small>
+
+  <h2>${workout.title}</h2>
+
+  <p>${workout.subtitle}</p>
+
+ </div>
+
+ `;
+
+
+ workout.exercises.forEach((ex,i)=>{
+
+  const last=
+  getLastWeight(ex.name);
+
+  let sets="";
+
+
+  for(let s=0;s<ex.sets;s++){
+
+   sets+=`
+
+   <div class="set">
+
+    <span>S${s+1}</span>
+
+    <input
+     type="number"
+     step="0.5"
+     inputmode="decimal"
+     placeholder="Kg"
+     data-ex="${i}"
+     data-set="${s}"
+     data-type="kg"
+    >
+
+    <input
+     type="number"
+     inputmode="numeric"
+     placeholder="Rip."
+     data-ex="${i}"
+     data-set="${s}"
+     data-type="reps"
+    >
+
+   </div>
+
+   `;
+
+  }
+
+
+  content.innerHTML+=`
+
+  <div class="exercise">
+
+   <img
+    class="exercisePhoto"
+    src="${ex.photo}"
+    alt="${ex.name}"
+    loading="lazy"
+   >
+
+   <div class="exerciseBody">
+
+    <div class="exerciseTop">
+
+     <h3>${ex.name}</h3>
+
+     <div class="prescription">
+      ${ex.prescription}
+     </div>
+
+    </div>
+
+
+    <div class="last">
+
+     ${
+      last
+      ? "Ultimo carico: "+last+" kg"
+      : "Primo allenamento"
+     }
+
+    </div>
+
+
+    ${sets}
+
+
+    <div class="exerciseButtons">
+
+     <button
+      class="lastButton"
+      onclick="useLast(${i},${last || 0})"
+     >
+      Usa ultimo
+     </button>
+
+
+     <button
+      class="timerButton"
+      onclick="startTimer(${ex.rest})"
+     >
+      ⏱ ${ex.rest} sec
+     </button>
+
+    </div>
+
+   </div>
+
+  </div>
+
+  `;
+
+ });
+
+}
+
+
+/* USA ULTIMO PESO */
+
+function useLast(index,kg){
+
+ if(!kg){
+
+  toast("Nessun peso precedente");
+
+  return;
+
+ }
+
+ document
+ .querySelectorAll(
+  `[data-ex="${index}"][data-type="kg"]`
+ )
+ .forEach(input=>{
+  input.value=kg;
+ });
+
+}
+
+
+/* TIMER */
+
+function startTimer(seconds){
+
+ clearInterval(timerInterval);
+
+ let remaining=seconds;
+
+ const box=
+ document.getElementById("timer");
+
+ box.style.display="block";
+
+ updateTimer(remaining);
+
+
+ timerInterval=setInterval(()=>{
+
+  remaining--;
+
+  updateTimer(remaining);
+
+
+  if(remaining<=0){
+
+   clearInterval(timerInterval);
+
+   document.getElementById(
+    "timerText"
+   ).innerText="VAI!";
+
+   box.style.background=
+   "#20c777";
+
+
+   if("vibrate" in navigator){
+    navigator.vibrate(
+     [250,100,250]
+    );
+   }
+
+
+   setTimeout(()=>{
+
+    box.style.display="none";
+
+    box.style.background=
+    "#4c7dff";
+
+   },2500);
+
+  }
+
+ },1000);
+
+}
+
+
+function updateTimer(sec){
+
+ const min=
+ Math.floor(sec/60);
+
+ const seconds=
+ sec%60;
+
+ document.getElementById(
+  "timerText"
+ ).innerText=
+ `${min}:${String(seconds).padStart(2,"0")}`;
+
+}
+
+
+/* SALVA */
+
+function saveWorkout(){
+
+ const workout=
+ workouts[currentDay];
+
+ const session={
+  date:new Date().toISOString(),
+  day:currentDay,
+  exercises:[]
+ };
+
+
+ workout.exercises.forEach(
+ (exercise,i)=>{
+
+  const data={
+   name:exercise.name,
+   sets:[]
+  };
+
+
+  for(let s=0;s<exercise.sets;s++){
+
+   const kg=
+   document.querySelector(
+    `[data-ex="${i}"][data-set="${s}"][data-type="kg"]`
+   ).value;
+
+
+   const reps=
+   document.querySelector(
+    `[data-ex="${i}"][data-set="${s}"][data-type="reps"]`
+   ).value;
+
+
+   data.sets.push({
+    kg,
+    reps
+   });
+
+  }
+
+
+  session.exercises.push(
+   data
+  );
+
+ });
+
+
+ let history=
+ JSON.parse(
+  localStorage.getItem(
+   "gymHistory"
+  ) || "[]"
+ );
+
+
+ history.unshift(
+  session
+ );
+
+
+ localStorage.setItem(
+  "gymHistory",
+  JSON.stringify(history)
+ );
+
+
+ toast(
+  "Allenamento salvato ✓"
+ );
+
+
+ setTimeout(
+  render,
+  500
+ );
+
+}
+
+
+/* MESSAGGIO */
+
+function toast(text){
+
+ const t=
+ document.getElementById(
+  "toast"
+ );
+
+ t.innerText=text;
+
+ t.classList.add(
+  "show"
+ );
+
+ setTimeout(()=>{
+
+  t.classList.remove(
+   "show"
+  );
+
+ },1800);
+
+}
+
+
+
+function showHistory(){
+
+ const history =
+ JSON.parse(
+  localStorage.getItem("gymHistory") || "[]"
+ );
+
+ const content =
+ document.getElementById("content");
+
+ document.querySelectorAll(".tabs button")
+ .forEach(b=>b.classList.remove("active"));
+
+ if(!history.length){
+
+  content.innerHTML = `
+   <div class="titleBox">
+    <small>STORICO</small>
+    <h2>Allenamenti salvati</h2>
+    <p>Nessun allenamento registrato.</p>
+   </div>
+  `;
+
+  return;
+ }
+
+ let html = `
+  <div class="titleBox">
+   <small>STORICO</small>
+   <h2>Allenamenti salvati</h2>
+   <p>${history.length} sessioni registrate</p>
+  </div>
+ `;
+
+ history.forEach(session=>{
+
+  const date =
+  new Date(session.date)
+  .toLocaleString("it-IT",{
+   dateStyle:"medium",
+   timeStyle:"short"
+  });
+
+  html += `
+   <div class="exercise">
+    <div class="exerciseBody">
+     <div class="exerciseTop">
+      <h3>Giorno ${session.day}</h3>
+      <div class="prescription">${date}</div>
+     </div>
+  `;
+
+  session.exercises.forEach(ex=>{
+
+   const sets = ex.sets
+   .filter(s=>s.kg || s.reps)
+   .map(s=>`${s.kg || "-"} kg × ${s.reps || "-"}`)
+   .join(" • ");
+
+   if(sets){
+
+    html += `
+     <div style="
+      margin-top:12px;
+      padding-top:12px;
+      border-top:1px solid #2a3241;
+     ">
+      <strong>${ex.name}</strong>
+      <div style="
+       margin-top:5px;
+       color:#949eae;
+       font-size:13px;
+       line-height:1.6;
+      ">
+       ${sets}
+      </div>
+     </div>
+    `;
+
+   }
+
+  });
+
+  html += `
+    </div>
+   </div>
+  `;
+
+ });
+
+ content.innerHTML = html;
+}
+
+
+function showProgress(){
+
+ const history =
+ JSON.parse(
+  localStorage.getItem("gymHistory") || "[]"
+ );
+
+ const content =
+ document.getElementById("content");
+
+ document.querySelectorAll(".tabs button")
+ .forEach(b=>b.classList.remove("active"));
+
+ const latest = {};
+
+ history.forEach(session=>{
+
+  session.exercises.forEach(ex=>{
+
+   if(latest[ex.name]) return;
+
+   const weights = ex.sets
+   .map(s=>parseFloat(s.kg))
+   .filter(n=>!isNaN(n));
+
+   if(weights.length){
+
+    latest[ex.name] = Math.max(...weights);
+
+   }
+
+  });
+
+ });
+
+ const principal = [
+  "Panca piana bilanciere",
+  "Lat Machine",
+  "Squat / Multipower",
+  "Leg Press",
+  "Shoulder Press"
+ ];
+
+ let cards = "";
+
+ principal.forEach(name=>{
+
+  const value = latest[name];
+
+  cards += `
+   <div class="exercise">
+    <div class="exerciseBody">
+     <div class="exerciseTop">
+      <h3>${name}</h3>
+      <div class="prescription">
+       ${value ? value + " kg" : "-"}
+      </div>
+     </div>
+
+     <div class="last">
+      Ultimo carico massimo registrato
+     </div>
+
+    </div>
+   </div>
+  `;
+
+ });
+
+ content.innerHTML = `
+  <div class="titleBox">
+   <small>PROGRESSI</small>
+   <h2>I tuoi carichi</h2>
+   <p>Ultimi valori registrati</p>
+  </div>
+
+  ${cards}
+ `;
+}
+
+openDay("A");
+
+</script>
+
+</body>
+</html>
