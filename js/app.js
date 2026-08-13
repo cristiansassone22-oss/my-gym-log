@@ -342,10 +342,24 @@ function render(){
 
     <div class="exerciseTop">
 
-     <h3>${ex.name}</h3>
+     <div>
+      <h3>${ex.name}</h3>
+     </div>
 
-     <div class="prescription">
-      ${ex.prescription}
+     <div class="exerciseTopActions">
+
+      <button
+       class="favoriteButton ${isFavorite(currentDay, ex.name) ? 'active' : ''}"
+       onclick="toggleFavorite('${currentDay}','${ex.name}',this)"
+       aria-label="Preferito"
+      >
+       ${isFavorite(currentDay, ex.name) ? '★' : '☆'}
+      </button>
+
+      <div class="prescription">
+       ${ex.prescription}
+      </div>
+
      </div>
 
     </div>
@@ -911,7 +925,7 @@ function showGif(src, name){
 }
 
 function setMobileNav(active){
- const ids = ["mobileScheda","mobileHistory","mobileProgress"];
+ const ids = ["mobileScheda","mobileHistory","mobileProgress","mobileFavorites"];
 
  ids.forEach(id=>{
   const el=document.getElementById(id);
@@ -1276,4 +1290,248 @@ function closeExerciseNote(){
  document.getElementById(
   "noteModal"
  )?.remove();
+}
+
+
+/* =========================
+   PREFERITI
+========================= */
+
+function getFavorites(){
+
+ try{
+  return JSON.parse(
+   localStorage.getItem("gymFavorites") || "[]"
+  );
+ }catch{
+  return [];
+ }
+
+}
+
+function saveFavorites(favorites){
+
+ localStorage.setItem(
+  "gymFavorites",
+  JSON.stringify(favorites)
+ );
+
+}
+
+function favoriteKey(day,name){
+ return `${day}::${name}`;
+}
+
+function isFavorite(day,name){
+
+ return getFavorites().includes(
+  favoriteKey(day,name)
+ );
+
+}
+
+function toggleFavorite(day,name,button){
+
+ let favorites = getFavorites();
+
+ const key = favoriteKey(day,name);
+
+ if(favorites.includes(key)){
+
+  favorites = favorites.filter(
+   item => item !== key
+  );
+
+  button?.classList.remove("active");
+
+  if(button){
+   button.textContent = "☆";
+  }
+
+  toast("Rimosso dai preferiti");
+
+ }else{
+
+  favorites.push(key);
+
+  button?.classList.add("active");
+
+  if(button){
+   button.textContent = "★";
+  }
+
+  toast("Aggiunto ai preferiti ⭐");
+
+ }
+
+ saveFavorites(favorites);
+
+}
+
+function showFavorites(){
+
+ const favorites = getFavorites();
+
+ const content =
+ document.getElementById("content");
+
+ document.querySelectorAll(".tabs button")
+ .forEach(b => b.classList.remove("active"));
+
+ let items = [];
+
+ Object.entries(workouts).forEach(
+ ([day,workout]) => {
+
+  workout.exercises.forEach(ex => {
+
+   if(
+    favorites.includes(
+     favoriteKey(day,ex.name)
+    )
+   ){
+
+    items.push({
+     day,
+     ...ex
+    });
+
+   }
+
+  });
+
+ });
+
+ let html = `
+  <div class="titleBox">
+   <small>PREFERITI</small>
+   <h2>⭐ I tuoi esercizi</h2>
+   <p>${items.length} esercizi salvati</p>
+  </div>
+ `;
+
+ if(!items.length){
+
+  html += `
+   <div class="exercise">
+    <div class="exerciseBody">
+     <div class="last">
+      Non hai ancora aggiunto esercizi ai preferiti.
+     </div>
+    </div>
+   </div>
+  `;
+
+ }else{
+
+  items.forEach(ex => {
+
+   const last =
+   getLastWeight(ex.name);
+
+   html += `
+    <div class="exercise favoriteCard">
+
+     <img
+      class="exercisePhoto"
+      src="${ex.gif || ex.photo}"
+      alt="${ex.name}"
+      loading="lazy"
+     >
+
+     <div class="exerciseBody">
+
+      <div class="exerciseTop">
+
+       <div>
+        <div class="favoriteDay">
+         GIORNO ${ex.day}
+        </div>
+
+        <h3>${ex.name}</h3>
+       </div>
+
+       <button
+        class="favoriteButton active"
+        onclick="removeFavoriteFromList('${ex.day}','${ex.name}')"
+       >
+        ★
+       </button>
+
+      </div>
+
+      <div class="last">
+       ${
+        last
+        ? `Ultimo carico: ${last} kg`
+        : "Nessun carico precedente"
+       }
+      </div>
+
+      <button
+       class="openFavoriteButton"
+       onclick="openFavoriteExercise('${ex.day}','${ex.name}')"
+      >
+       Apri nella scheda →
+      </button>
+
+     </div>
+
+    </div>
+   `;
+
+  });
+
+ }
+
+ content.innerHTML = html;
+
+ setMobileNav("mobileFavorites");
+
+}
+
+function removeFavoriteFromList(day,name){
+
+ let favorites = getFavorites();
+
+ favorites =
+ favorites.filter(
+  item => item !== favoriteKey(day,name)
+ );
+
+ saveFavorites(favorites);
+
+ showFavorites();
+
+ toast("Rimosso dai preferiti");
+
+}
+
+function openFavoriteExercise(day,name){
+
+ openDay(day);
+
+ setTimeout(()=>{
+
+  const titles =
+  [...document.querySelectorAll(".exercise h3")];
+
+  const title =
+  titles.find(
+   el => el.textContent.trim() === name
+  );
+
+  if(title){
+
+   title
+    .closest(".exercise")
+    ?.scrollIntoView({
+     behavior:"smooth",
+     block:"start"
+    });
+
+  }
+
+ },100);
+
 }

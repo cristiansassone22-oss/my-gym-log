@@ -44,7 +44,7 @@ main{
 
 .tabs{
   display:grid;
-  grid-template-columns:repeat(3,1fr);
+  grid-template-columns:repeat(4,1fr);
   gap:8px;
   margin:15px 0 20px;
 }
@@ -429,7 +429,7 @@ input{
   bottom:0;
   z-index:70;
   display:grid;
-  grid-template-columns:repeat(3,1fr);
+  grid-template-columns:repeat(4,1fr);
   gap:4px;
   padding:
     8px
@@ -662,4 +662,69 @@ transform:scale(.98);
 .noteSave{
  background:#4c7dff;
  color:white;
+}
+
+
+/* =========================
+   PREFERITI
+========================= */
+
+.exerciseTopActions{
+ display:flex;
+ align-items:center;
+ gap:8px;
+}
+
+.favoriteButton{
+ width:38px;
+ height:38px;
+ flex:0 0 38px;
+ padding:0 !important;
+ border:1px solid #333a48 !important;
+ border-radius:12px !important;
+ background:#202632 !important;
+ color:#7d8798 !important;
+ font-size:24px !important;
+ line-height:1;
+ font-weight:400 !important;
+}
+
+.favoriteButton.active{
+ color:#ffd24a !important;
+ background:#3a3219 !important;
+ border-color:#665828 !important;
+}
+
+.favoriteDay{
+ color:#8daaff;
+ font-size:10px;
+ font-weight:900;
+ letter-spacing:1px;
+ margin-bottom:4px;
+}
+
+.openFavoriteButton{
+ width:100%;
+ min-height:46px;
+ border:0;
+ border-radius:13px;
+ background:#253867;
+ color:#a9c0ff;
+ font-weight:800;
+}
+
+.favoriteCard .exercisePhoto{
+ max-height:280px;
+}
+
+@media(max-width:390px){
+
+ .mobileNav button{
+  font-size:10px;
+ }
+
+ .mobileNav button span{
+  font-size:19px;
+ }
+
 }
