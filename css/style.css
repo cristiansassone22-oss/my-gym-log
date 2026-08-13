@@ -241,3 +241,22 @@ input{
     height:240px;
   }
 }
+
+.exercisePhoto{
+  width:100%;
+  height:190px;
+  object-fit:cover;
+  display:block;
+  cursor:pointer;
+  background:#10131a;
+}
+
+.exercisePhoto:hover{
+  opacity:.95;
+}
+
+@media(min-width:700px){
+  .exercisePhoto{
+    height:250px;
+  }
+}

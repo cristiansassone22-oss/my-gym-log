@@ -6,7 +6,7 @@ A:{
  exercises:[
 
   {
-   name:"Panca piana bilanciere",
+   name:"Panca piana bilanciere", photo:"images/panca-piana.jpg", gif:"gifs/panca-piana.gif",
    prescription:"4 × 6-8",
    sets:4,
    rest:120,
@@ -14,7 +14,7 @@ A:{
   },
 
   {
-   name:"Panca inclinata manubri",
+   name:"Panca inclinata manubri", photo:"images/panca-inclinata.jpg", gif:"gifs/panca-inclinata.gif",
    prescription:"3 × 8-10",
    sets:3,
    rest:90,
@@ -22,7 +22,7 @@ A:{
   },
 
   {
-   name:"Croci ai cavi",
+   name:"Croci ai cavi", photo:"images/croci-cavi.jpg", gif:"gifs/croci-cavi.gif",
    prescription:"3 × 12-15",
    sets:3,
    rest:60,
@@ -30,7 +30,7 @@ A:{
   },
 
   {
-   name:"Shoulder Press",
+   name:"Shoulder Press", photo:"images/shoulder-press.jpg", gif:"gifs/shoulder-press.gif",
    prescription:"3 × 8-10",
    sets:3,
    rest:90,
@@ -38,7 +38,7 @@ A:{
   },
 
   {
-   name:"Alzate laterali",
+   name:"Alzate laterali", photo:"images/alzate-laterali.jpg", gif:"gifs/alzate-laterali.gif",
    prescription:"3 × 15",
    sets:3,
    rest:60,
@@ -46,7 +46,7 @@ A:{
   },
 
   {
-   name:"Pushdown ai cavi",
+   name:"Pushdown ai cavi", photo:"images/pushdown.jpg", gif:"gifs/pushdown.gif",
    prescription:"3 × 10-12",
    sets:3,
    rest:60,
@@ -54,7 +54,7 @@ A:{
   },
 
   {
-   name:"French Press EZ",
+   name:"French Press EZ", photo:"images/french-press.jpg", gif:"gifs/french-press.gif",
    prescription:"3 × 10-12",
    sets:3,
    rest:60,
@@ -190,7 +190,7 @@ C:{
   },
 
   {
-   name:"Alzate laterali",
+   name:"Alzate laterali", photo:"images/alzate-laterali.jpg", gif:"gifs/alzate-laterali.gif",
    prescription:"3 × 15",
    sets:3,
    rest:60,
@@ -802,3 +802,71 @@ function showProgress(){
 }
 
 openDay("A");
+
+
+function showGif(src, name){
+ if(!src) return;
+
+ const old = document.getElementById("gifModal");
+ if(old) old.remove();
+
+ const modal = document.createElement("div");
+ modal.id = "gifModal";
+
+ modal.style.cssText = `
+  position:fixed;
+  inset:0;
+  background:rgba(0,0,0,.88);
+  z-index:9999;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  padding:20px;
+ `;
+
+ modal.innerHTML = `
+  <div style="
+   width:100%;
+   max-width:520px;
+   background:#151922;
+   border:1px solid #2a3241;
+   border-radius:18px;
+   padding:14px;
+  ">
+   <div style="
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    gap:10px;
+    margin-bottom:10px;
+   ">
+    <strong>${name}</strong>
+    <button
+     onclick="document.getElementById('gifModal').remove()"
+     style="
+      border:0;
+      background:#2a3241;
+      color:white;
+      border-radius:10px;
+      padding:8px 12px;
+      font-weight:800;
+     "
+    >
+     Chiudi
+    </button>
+   </div>
+
+   <img
+    src="${src}"
+    style="
+     width:100%;
+     border-radius:12px;
+     display:block;
+     background:#000;
+    "
+   >
+  </div>
+ `;
+
+ document.body.appendChild(modal);
+}
