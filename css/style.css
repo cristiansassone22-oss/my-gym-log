@@ -1500,3 +1500,26 @@ input:focus{
 }
 
 
+
+
+.setCheck{
+
+ height:42px;
+ width:42px;
+ border:0;
+ border-radius:12px;
+ background:#252c38;
+ color:white;
+ font-size:18px;
+ font-weight:900;
+
+}
+
+
+.setCheck.completed{
+
+ background:#20c777;
+ color:#05160d;
+
+}
+

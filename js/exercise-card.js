@@ -109,7 +109,10 @@ function renderNewSets(exIndex,total){
      data-type="reps"
     >
 
-    <button>
+    <button
+     class="setCheck"
+     onclick="toggleSetComplete(this)"
+    >
      ○
     </button>
 
@@ -120,6 +123,19 @@ function renderNewSets(exIndex,total){
  }
 
  return html;
+
+}
+
+
+
+function toggleSetComplete(btn){
+
+ btn.classList.toggle("completed");
+
+ btn.textContent =
+ btn.classList.contains("completed")
+ ? "✓"
+ : "○";
 
 }
 
