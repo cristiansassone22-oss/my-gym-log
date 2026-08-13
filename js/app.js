@@ -846,3 +846,33 @@ function showGif(src, name){
 
  document.body.appendChild(modal);
 }
+
+function setMobileNav(active){
+ const ids = ["mobileScheda","mobileHistory","mobileProgress"];
+
+ ids.forEach(id=>{
+  const el=document.getElementById(id);
+  if(el) el.classList.remove("active");
+ });
+
+ const current=document.getElementById(active);
+ if(current) current.classList.add("active");
+}
+
+const _oldOpenDay = openDay;
+openDay = function(day){
+ _oldOpenDay(day);
+ setMobileNav("mobileScheda");
+};
+
+const _oldShowHistory = showHistory;
+showHistory = function(){
+ _oldShowHistory();
+ setMobileNav("mobileHistory");
+};
+
+const _oldShowProgress = showProgress;
+showProgress = function(){
+ _oldShowProgress();
+ setMobileNav("mobileProgress");
+};

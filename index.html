@@ -28,36 +28,22 @@
 </main>
 
 
-<div style="
-position:fixed;
-bottom:78px;
-left:50%;
-transform:translateX(-50%);
-width:calc(100% - 30px);
-max-width:690px;
-display:grid;
-grid-template-columns:1fr 1fr;
-gap:8px;
-z-index:50;
-">
-<button id="navHistory" onclick="showHistory()" style="
-padding:13px;
-border-radius:13px;
-border:1px solid #2a3241;
-background:#151922;
-color:white;
-font-weight:800;
-">STORICO</button>
+<nav class="mobileNav">
+  <button id="mobileScheda" class="active" onclick="openDay(currentDay)">
+    <span>🏋️</span>
+    Scheda
+  </button>
 
-<button id="navProgress" onclick="showProgress()" style="
-padding:13px;
-border-radius:13px;
-border:1px solid #2a3241;
-background:#151922;
-color:white;
-font-weight:800;
-">PROGRESSI</button>
-</div>
+  <button id="mobileHistory" onclick="showHistory()">
+    <span>🕘</span>
+    Storico
+  </button>
+
+  <button id="mobileProgress" onclick="showProgress()">
+    <span>📈</span>
+    Progressi
+  </button>
+</nav>
 
 <button class="save" onclick="saveWorkout()">
 SALVA ALLENAMENTO
