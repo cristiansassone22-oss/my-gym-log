@@ -24,6 +24,35 @@ function calculateSessionVolume(session){
 }
 
 
+
+
+function calculateCompletedSets(session){
+
+ let done=0;
+ let total=0;
+
+ session.exercises.forEach(ex=>{
+
+  ex.sets.forEach(set=>{
+
+   total++;
+
+   if(set.completed){
+    done++;
+   }
+
+  });
+
+ });
+
+ return {
+  done,
+  total
+ };
+
+}
+
+
 const workouts = {
 
 A:{
@@ -849,6 +878,9 @@ function showHistory(){
       <div class="prescription">${date}</div>
       <div class="prescription">
        Volume: ${calculateSessionVolume(session)} kg
+       </div>
+       <div class="prescription">
+        Serie completate: ${calculateCompletedSets(session).done}/${calculateCompletedSets(session).total}
       </div>
      </div>
   `;
