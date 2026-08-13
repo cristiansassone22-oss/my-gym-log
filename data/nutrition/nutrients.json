@@ -1,0 +1,20 @@
+{
+ "macros":[
+  "kcal",
+  "protein",
+  "carbs",
+  "fats",
+  "fiber"
+ ],
+ "micros":[
+  "vitaminA",
+  "vitaminC",
+  "vitaminD",
+  "vitaminE",
+  "calcium",
+  "iron",
+  "magnesium",
+  "potassium",
+  "zinc"
+ ]
+}

@@ -271,6 +271,8 @@ if("caches" in window){
 
 function openDay(day){
 
+ localStorage.setItem("workoutStart", Date.now());
+
  currentDay=day;
 
  document.querySelectorAll(".tabs button")
@@ -719,6 +721,11 @@ function saveWorkout(){
  const session={
   date:new Date().toISOString(),
   day:currentDay,
+  duration:
+   Math.round(
+    (Date.now() - Number(localStorage.getItem("workoutStart") || Date.now()))
+    /60000
+   ),
   exercises:[]
  };
 
@@ -881,6 +888,9 @@ function showHistory(){
        </div>
        <div class="prescription">
         Serie completate: ${calculateCompletedSets(session).done}/${calculateCompletedSets(session).total}
+       </div>
+       <div class="prescription">
+        Durata: ${session.duration ? session.duration+" min" : "--"}
       </div>
      </div>
   `;
