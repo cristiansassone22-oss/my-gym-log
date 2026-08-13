@@ -260,3 +260,11 @@ input{
     height:250px;
   }
 }
+
+.exercisePhoto{
+  width:100%;
+  height:auto !important;
+  max-height:420px;
+  object-fit:contain !important;
+  background:#0d1016;
+}
