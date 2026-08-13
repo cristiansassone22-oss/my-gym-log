@@ -1605,80 +1605,128 @@ function showCharts(){
 
   const max = Math.max(...data);
 
-  const bars = data.map(v=>{
+ const width=340;
+ const height=170;
+ const pad=20;
 
-   const h =
-   Math.max(
-    10,
-    Math.round(
-     (v/max)*120
-    )
-   );
+ const points=data.map((v,i)=>{
 
-   return `
-   <div
-    style="
-    flex:1;
-    display:flex;
-    flex-direction:column;
-    align-items:center;
-    justify-content:flex-end;
-    ">
+  const x=
+  data.length===1
+  ? width/2
+  : pad+i*((width-pad*2)/(data.length-1));
 
-    <div
-    style="
-    width:100%;
-    border-radius:8px 8px 0 0;
-    height:${h}px;
-    background:#4c7dff;
-    ">
+  const y=
+  height-pad-
+  ((v/max)*(height-pad*2));
+
+  return {x,y,v};
+
+ });
+
+ let path="";
+
+ points.forEach((p,i)=>{
+
+  path+=
+  (i===0?"M":"L")+
+  p.x+" "+p.y+" ";
+
+ });
+
+ let circles="";
+
+ points.forEach(p=>{
+
+  circles+=`
+   <circle
+    cx="${p.x}"
+    cy="${p.y}"
+    r="5"
+    fill="#4c7dff"
+   />
+  `;
+
+ });
+
+ html+=`
+
+ <div class="exercise">
+
+  <div class="exerciseBody">
+
+   <div class="exerciseTop">
+
+    <h3>${name}</h3>
+
+    <div class="prescription">
+     🏆 ${max} kg
     </div>
-
-    <small
-    style="
-    color:#97a2b4;
-    margin-top:5px;
-    ">
-    ${v}
-    </small>
 
    </div>
-   `;
 
-  }).join("");
-
-  html += `
-  <div class="exercise">
-
-   <div class="exerciseBody">
-
-    <div class="exerciseTop">
-
-     <h3>${name}</h3>
-
-     <div class="prescription">
-      🏆 ${max} kg
-     </div>
-
-    </div>
-
-    <div
+   <svg
+    viewBox="0 0 ${width} ${height}"
     style="
-    display:flex;
-    align-items:flex-end;
-    gap:6px;
-    height:145px;
-    margin-top:20px;
+    width:100%;
+    margin-top:18px;
     ">
 
-    ${bars}
+    <path
+     d="${path}"
+     fill="none"
+     stroke="#4c7dff"
+     stroke-width="4"
+     stroke-linecap="round"
+     stroke-linejoin="round"
+    />
 
+    ${circles}
+
+   </svg>
+
+   <div style="
+   display:grid;
+   grid-template-columns:repeat(4,1fr);
+   margin-top:14px;
+   gap:8px;
+   text-align:center;
+   ">
+
+    <div>
+     <small style="color:#8b95a7">Record</small>
+     <strong style="display:block">${max} kg</strong>
+    </div>
+
+    <div>
+     <small style="color:#8b95a7">Ultimo</small>
+     <strong style="display:block">${data[data.length-1]} kg</strong>
+    </div>
+
+    <div>
+     <small style="color:#8b95a7">Sessioni</small>
+     <strong style="display:block">${data.length}</strong>
+    </div>
+
+    <div>
+     <small style="color:#8b95a7">Δ</small>
+     <strong style="display:block">
+      ${
+      data.length>1
+      ? (data[data.length-1]-data[0]>0?"+":"")
+        +(data[data.length-1]-data[0])
+      : "-"
+      }
+     </strong>
     </div>
 
    </div>
 
   </div>
-  `;
+
+ </div>
+
+ `;
 
  });
 
