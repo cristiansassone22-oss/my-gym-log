@@ -1055,7 +1055,7 @@ function showGif(src, name){
 }
 
 function setMobileNav(active){
- const ids = ["mobileScheda","mobileHistory","mobileProgress","mobileFavorites","mobileEditHistory","mobileBackup","mobileWeight"];
+ const ids = ["mobileScheda","mobileHistory","mobileProgress","mobileFavorites","mobileMore"];
 
  ids.forEach(id=>{
   const el=document.getElementById(id);
@@ -3269,6 +3269,52 @@ function releaseScreenAwake(){
   window.timerWakeLock=null;
 
  }
+
+}
+
+
+
+function showMoreMenu(){
+
+ const content =
+ document.getElementById("content");
+
+
+ content.innerHTML=`
+
+ <div class="titleBox">
+  <small>ALTRO</small>
+  <h2>⚙️ Strumenti</h2>
+  <p>Gestione e impostazioni</p>
+ </div>
+
+
+ <div class="exercise">
+
+  <div class="exerciseBody moreMenu">
+
+   <button onclick="showEditHistory()">
+    ✏️ Modifica storico
+   </button>
+
+
+   <button onclick="showBackup()">
+    📦 Backup dati
+   </button>
+
+
+   <button onclick="showWeight()">
+    ⚖️ Peso corporeo
+   </button>
+
+  </div>
+
+ </div>
+
+ `;
+
+
+ setMobileNav("mobileMore");
 
 }
 

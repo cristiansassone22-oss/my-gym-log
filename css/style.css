@@ -1041,3 +1041,121 @@ input:focus{
  letter-spacing:-.2px;
 }
 
+
+
+/* =========================
+   RESTYLING CARTE IPHONE
+========================= */
+
+
+.exercise{
+ background:
+ linear-gradient(
+  145deg,
+  #171d2a,
+  #10141c
+ );
+ border:1px solid rgba(255,255,255,.08);
+ box-shadow:
+  0 12px 35px rgba(0,0,0,.28);
+}
+
+
+.exercisePhoto{
+ height:150px !important;
+ max-height:150px !important;
+ border-radius:0;
+ background:#080b10;
+}
+
+
+.exerciseBody{
+ padding:16px;
+}
+
+
+.exercise h3{
+ font-size:19px;
+ font-weight:800;
+}
+
+
+.last{
+ background:#202837;
+ padding:8px 12px;
+ border-radius:12px;
+ margin-top:10px;
+}
+
+
+.set{
+ background:#0d1118;
+ padding:5px;
+ border-radius:12px;
+}
+
+
+.exerciseButtons{
+ grid-template-columns:1fr 1fr;
+}
+
+
+.exerciseButtons button{
+ min-height:46px;
+}
+
+
+.save{
+ background:
+ linear-gradient(
+  90deg,
+  #4c7dff,
+  #6c5cff
+ );
+}
+
+
+.mobileNav{
+ grid-template-columns:repeat(5,1fr);
+}
+
+
+.mobileNav button{
+ font-size:11px;
+}
+
+
+.moreMenu{
+ display:grid;
+ gap:12px;
+}
+
+
+.moreMenu button{
+
+ min-height:55px;
+ border:0;
+ border-radius:16px;
+ background:#202837;
+ color:white;
+ font-size:16px;
+ font-weight:800;
+
+}
+
+
+.favoriteButton{
+ background:#202837 !important;
+}
+
+
+.titleBox{
+ background:
+ linear-gradient(
+  135deg,
+  #25345d,
+  #111722
+ );
+}
+
+
