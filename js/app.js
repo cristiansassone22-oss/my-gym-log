@@ -376,10 +376,10 @@ function render(){
 
 
      <button
-      class="videoButton"
-      onclick="openVideo('${ex.gif || ex.photo}','${ex.name}')"
+      class="historyButton"
+      onclick="showExerciseHistory('${ex.name}')"
      >
-      ▶ Video
+      📈 Carichi
      </button>
 
      <button
