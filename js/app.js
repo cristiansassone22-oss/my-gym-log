@@ -956,3 +956,103 @@ function openVideo(src,title){
  document.body.appendChild(modal);
 
 }
+
+
+
+function showExerciseHistory(name){
+
+ const history =
+ JSON.parse(
+  localStorage.getItem("gymHistory") || "[]"
+ );
+
+ const content =
+ document.getElementById("content");
+
+ let sessions = [];
+
+ history.forEach(session => {
+
+  const exercise =
+  session.exercises?.find(
+   e => e.name === name
+  );
+
+  if(!exercise) return;
+
+  const sets =
+  exercise.sets?.filter(
+   s => s.kg || s.reps
+  ) || [];
+
+  if(sets.length){
+   sessions.push({
+    date: session.date,
+    sets
+   });
+  }
+
+ });
+
+ let html = `
+  <div class="titleBox">
+   <small>CRONOLOGIA</small>
+   <h2>📈 ${name}</h2>
+   <p>${sessions.length} allenamenti registrati</p>
+  </div>
+ `;
+
+ if(!sessions.length){
+
+  html += `
+   <div class="exercise">
+    <div class="exerciseBody">
+     <div class="last">
+      Nessun carico registrato per questo esercizio.
+     </div>
+    </div>
+   </div>
+  `;
+
+ } else {
+
+  sessions.forEach(item => {
+
+   const date =
+   new Date(item.date)
+   .toLocaleDateString("it-IT",{
+    day:"2-digit",
+    month:"2-digit",
+    year:"numeric"
+   });
+
+   const sets =
+   item.sets
+   .map(
+    s => `${s.kg || "-"} kg × ${s.reps || "-"}`
+   )
+   .join("<br>");
+
+   html += `
+    <div class="exercise">
+     <div class="exerciseBody">
+
+      <div class="exerciseTop">
+       <h3>${date}</h3>
+      </div>
+
+      <div class="last" style="line-height:1.8">
+       ${sets}
+      </div>
+
+     </div>
+    </div>
+   `;
+  });
+
+ }
+
+ content.innerHTML = html;
+
+ setMobileNav("mobileHistory");
+}
