@@ -119,7 +119,7 @@ B:{
   },
 
   {
-   name:"Plank",
+   name:"Plank", photo:"images/plank.jpg", gif:"gifs/plank.gif",
    prescription:"3 × 45-60 sec",
    sets:3,
    rest:45,
