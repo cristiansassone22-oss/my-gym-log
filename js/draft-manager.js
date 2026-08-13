@@ -1,6 +1,10 @@
 
 function getDraftWorkout(){
 
+ if(localStorage.getItem("draftCleared")){
+  return {};
+ }
+
  return JSON.parse(
   localStorage.getItem("draftWorkout") || "{}"
  );

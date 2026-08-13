@@ -728,6 +728,10 @@ function saveWorkout(){
  );
 
 
+ localStorage.removeItem("draftWorkout");
+ localStorage.setItem("draftCleared","true");
+
+
  toast(
   "Allenamento salvato ✓"
  );
