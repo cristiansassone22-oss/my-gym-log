@@ -63,56 +63,56 @@ B:{
  exercises:[
 
   {
-   name:"Lat Machine",
+   name:"Lat Machine", photo:"images/lat-machine.jpg", gif:"gifs/lat-machine.gif",
    prescription:"4 × 8-10",
    sets:4,
    rest:90,
   },
 
   {
-   name:"Rematore macchina",
+   name:"Rematore macchina", photo:"images/rematore.jpg", gif:"gifs/rematore.gif",
    prescription:"3 × 10",
    sets:3,
    rest:90,
   },
 
   {
-   name:"Pulley basso",
+   name:"Pulley basso", photo:"images/pulley.jpg", gif:"gifs/pulley.gif",
    prescription:"3 × 10-12",
    sets:3,
    rest:75,
   },
 
   {
-   name:"Face Pull",
+   name:"Face Pull", photo:"images/face-pull.jpg", gif:"gifs/face-pull.gif",
    prescription:"3 × 15",
    sets:3,
    rest:60,
   },
 
   {
-   name:"Curl bilanciere EZ",
+   name:"Curl bilanciere EZ", photo:"images/curl-ez.jpg", gif:"gifs/curl-ez.gif",
    prescription:"3 × 8-10",
    sets:3,
    rest:75,
   },
 
   {
-   name:"Curl inclinato manubri",
+   name:"Curl inclinato manubri", photo:"images/curl-inclinato.jpg", gif:"gifs/curl-inclinato.gif",
    prescription:"3 × 10-12",
    sets:3,
    rest:60,
   },
 
   {
-   name:"Hammer Curl",
+   name:"Hammer Curl", photo:"images/hammer-curl.jpg", gif:"gifs/hammer-curl.gif",
    prescription:"2 × 12",
    sets:2,
    rest:60,
   },
 
   {
-   name:"Crunch ai cavi",
+   name:"Crunch ai cavi", photo:"images/crunch-cavi.jpg", gif:"gifs/crunch-cavi.gif",
    prescription:"3 × 15",
    sets:3,
    rest:45,
