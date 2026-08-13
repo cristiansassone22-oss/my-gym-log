@@ -2188,6 +2188,13 @@ function showBackup(){
     📤 Esporta dati
    </button>
 
+   <button
+    class="backupButton"
+    onclick="generatePDFReport()"
+   >
+    📄 Genera Report PDF
+   </button>
+
 
    <label class="backupButton importLabel">
 
@@ -2344,6 +2351,229 @@ function importBackup(event){
 
 
  reader.readAsText(file);
+
+}
+
+
+
+/* =========================
+   REPORT PDF
+========================= */
+
+function generatePDFReport(){
+
+ const {
+  jsPDF
+ } = window.jspdf;
+
+
+ const doc =
+ new jsPDF();
+
+
+ const history =
+ JSON.parse(
+  localStorage.getItem("gymHistory") || "[]"
+ );
+
+
+ let y=20;
+
+
+ doc.setFontSize(20);
+ doc.text(
+  "MY GYM LOG - REPORT",
+  20,
+  y
+ );
+
+
+ y+=15;
+
+
+ doc.setFontSize(12);
+
+ doc.text(
+  "Data report: "+
+  new Date().toLocaleDateString("it-IT"),
+  20,
+  y
+ );
+
+
+ y+=15;
+
+
+ doc.text(
+  "Allenamenti registrati: "+
+  history.length,
+  20,
+  y
+ );
+
+
+ y+=15;
+
+
+ const stats={};
+
+
+ history.forEach(session=>{
+
+  session.exercises.forEach(ex=>{
+
+   const weights =
+   ex.sets
+   .map(s=>parseFloat(s.kg))
+   .filter(n=>!isNaN(n));
+
+
+   if(weights.length){
+
+    if(!stats[ex.name]){
+     stats[ex.name]=[];
+    }
+
+    stats[ex.name].push(
+     Math.max(...weights)
+    );
+
+   }
+
+  });
+
+ });
+
+
+ y+=10;
+
+
+ doc.setFontSize(16);
+ doc.text(
+  "Record esercizi",
+  20,
+  y
+ );
+
+
+ y+=10;
+
+ doc.setFontSize(11);
+
+
+ Object.entries(stats)
+ .forEach(([name,data])=>{
+
+  const max =
+  Math.max(...data);
+
+
+  if(y>270){
+
+   doc.addPage();
+   y=20;
+
+  }
+
+
+  doc.text(
+   `${name}: ${max} kg`,
+   20,
+   y
+  );
+
+  y+=7;
+
+ });
+
+
+ y+=10;
+
+
+ doc.setFontSize(16);
+
+ doc.text(
+  "Storico allenamenti",
+  20,
+  y
+ );
+
+
+ y+=10;
+
+ doc.setFontSize(10);
+
+
+ history.forEach(session=>{
+
+  if(y>270){
+
+   doc.addPage();
+   y=20;
+
+  }
+
+
+  const date =
+  new Date(session.date)
+  .toLocaleDateString("it-IT");
+
+
+  doc.text(
+   `Giorno ${session.day} - ${date}`,
+   20,
+   y
+  );
+
+
+  y+=6;
+
+
+  session.exercises.forEach(ex=>{
+
+   const sets =
+   ex.sets
+   .filter(s=>s.kg || s.reps)
+   .map(
+    s=>`${s.kg || "-"}kg x ${s.reps || "-"}`
+   )
+   .join(" | ");
+
+
+   if(sets){
+
+    if(y>270){
+
+     doc.addPage();
+     y=20;
+
+    }
+
+
+    doc.text(
+     ex.name+": "+sets,
+     25,
+     y
+    );
+
+    y+=6;
+
+   }
+
+  });
+
+
+  y+=5;
+
+ });
+
+
+ doc.save(
+  "My-Gym-Log-Report.pdf"
+ );
+
+
+ toast("PDF creato ✓");
 
 }
 
