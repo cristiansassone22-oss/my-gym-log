@@ -787,72 +787,196 @@ function showProgress(){
  document.querySelectorAll(".tabs button")
  .forEach(b=>b.classList.remove("active"));
 
- const latest = {};
+
+ const stats={};
+
 
  history.forEach(session=>{
 
   session.exercises.forEach(ex=>{
 
-   if(latest[ex.name]) return;
-
-   const weights = ex.sets
+   const weights =
+   ex.sets
    .map(s=>parseFloat(s.kg))
    .filter(n=>!isNaN(n));
 
-   if(weights.length){
 
-    latest[ex.name] = Math.max(...weights);
+   if(!weights.length) return;
+
+
+   if(!stats[ex.name]){
+
+    stats[ex.name]={
+     max:0,
+     last:0,
+     sessions:0,
+     volume:0
+    };
 
    }
+
+
+   const max=Math.max(...weights);
+
+   const volume =
+   ex.sets.reduce((sum,s)=>{
+
+    const kg=parseFloat(s.kg);
+    const reps=parseFloat(s.reps);
+
+    if(!isNaN(kg) && !isNaN(reps)){
+     return sum+(kg*reps);
+    }
+
+    return sum;
+
+   },0);
+
+
+   stats[ex.name].max =
+   Math.max(
+    stats[ex.name].max,
+    max
+   );
+
+
+   stats[ex.name].last=max;
+
+   stats[ex.name].sessions++;
+
+   stats[ex.name].volume+=volume;
+
 
   });
 
  });
 
- const principal = [
-  "Panca piana bilanciere",
-  "Lat Machine",
-  "Squat / Multipower",
-  "Leg Press",
-  "Shoulder Press"
- ];
 
- let cards = "";
+ let html=`
 
- principal.forEach(name=>{
+ <div class="titleBox">
 
-  const value = latest[name];
+  <small>PROGRESSI</small>
 
-  cards += `
-   <div class="exercise">
-    <div class="exerciseBody">
-     <div class="exerciseTop">
-      <h3>${name}</h3>
-      <div class="prescription">
-       ${value ? value + " kg" : "-"}
-      </div>
-     </div>
+  <h2>📈 Le tue statistiche</h2>
 
-     <div class="last">
-      Ultimo carico massimo registrato
-     </div>
+  <p>
+   ${history.length} allenamenti registrati
+  </p>
 
-    </div>
+ </div>
+
+ `;
+
+
+ if(!Object.keys(stats).length){
+
+  html+=`
+
+  <div class="exercise">
+
+   <div class="exerciseBody">
+
+    Nessun dato disponibile.
+
    </div>
+
+  </div>
+
   `;
+
+ }else{
+
+
+ Object.entries(stats)
+ .forEach(([name,data])=>{
+
+
+ html+=`
+
+ <div class="exercise">
+
+  <div class="exerciseBody">
+
+
+   <div class="exerciseTop">
+
+    <h3>${name}</h3>
+
+    <div class="prescription">
+     🏆 ${data.max} kg
+    </div>
+
+   </div>
+
+
+   <div style="
+    display:grid;
+    grid-template-columns:repeat(3,1fr);
+    gap:10px;
+    margin-top:18px;
+    text-align:center;
+   ">
+
+
+    <div>
+     <small>Ultimo</small>
+     <strong style="display:block">
+      ${data.last} kg
+     </strong>
+    </div>
+
+
+    <div>
+     <small>Record</small>
+     <strong style="display:block">
+      ${data.max} kg
+     </strong>
+    </div>
+
+
+    <div>
+     <small>Volume</small>
+     <strong style="display:block">
+      ${Math.round(data.volume)} kg
+     </strong>
+    </div>
+
+
+   </div>
+
+
+   <div style="
+    margin-top:15px;
+    color:#949eae;
+    font-size:13px;
+   ">
+
+    Sessioni:
+    ${data.sessions}
+
+   </div>
+
+
+  </div>
+
+ </div>
+
+ `;
+
 
  });
 
- content.innerHTML = `
-  <div class="titleBox">
-   <small>PROGRESSI</small>
-   <h2>I tuoi carichi</h2>
-   <p>Ultimi valori registrati</p>
-  </div>
 
-  ${cards}
- `;
+ }
+
+
+ content.innerHTML=html;
+
+ setMobileNav("mobileProgress");
+
 }
+
 
 openDay("A");
 
