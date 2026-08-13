@@ -1535,3 +1535,155 @@ function openFavoriteExercise(day,name){
  },100);
 
 }
+
+
+/* ==========================
+   GRAFICI
+========================== */
+
+function showCharts(){
+
+ const history =
+ JSON.parse(
+  localStorage.getItem("gymHistory") || "[]"
+ );
+
+ const content =
+ document.getElementById("content");
+
+ let html = `
+ <div class="titleBox">
+  <small>GRAFICI</small>
+  <h2>📊 Progressi</h2>
+  <p>Andamento dei tuoi esercizi</p>
+ </div>
+ `;
+
+ if(!history.length){
+
+  html += `
+  <div class="exercise">
+   <div class="exerciseBody">
+    <div class="last">
+     Nessun allenamento disponibile.
+    </div>
+   </div>
+  </div>
+  `;
+
+  content.innerHTML = html;
+  setMobileNav("mobileCharts");
+  return;
+
+ }
+
+ const stats = {};
+
+ history.slice().reverse().forEach(session=>{
+
+  session.exercises.forEach(ex=>{
+
+   const weight = Math.max(
+    ...ex.sets
+     .map(s=>parseFloat(s.kg))
+     .filter(n=>!isNaN(n)),
+    0
+   );
+
+   if(weight===0) return;
+
+   if(!stats[ex.name])
+      stats[ex.name]=[];
+
+   stats[ex.name].push(weight);
+
+  });
+
+ });
+
+ Object.entries(stats).forEach(([name,data])=>{
+
+  const max = Math.max(...data);
+
+  const bars = data.map(v=>{
+
+   const h =
+   Math.max(
+    10,
+    Math.round(
+     (v/max)*120
+    )
+   );
+
+   return `
+   <div
+    style="
+    flex:1;
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    justify-content:flex-end;
+    ">
+
+    <div
+    style="
+    width:100%;
+    border-radius:8px 8px 0 0;
+    height:${h}px;
+    background:#4c7dff;
+    ">
+    </div>
+
+    <small
+    style="
+    color:#97a2b4;
+    margin-top:5px;
+    ">
+    ${v}
+    </small>
+
+   </div>
+   `;
+
+  }).join("");
+
+  html += `
+  <div class="exercise">
+
+   <div class="exerciseBody">
+
+    <div class="exerciseTop">
+
+     <h3>${name}</h3>
+
+     <div class="prescription">
+      🏆 ${max} kg
+     </div>
+
+    </div>
+
+    <div
+    style="
+    display:flex;
+    align-items:flex-end;
+    gap:6px;
+    height:145px;
+    margin-top:20px;
+    ">
+
+    ${bars}
+
+    </div>
+
+   </div>
+
+  </div>
+  `;
+
+ });
+
+ content.innerHTML = html;
+
+ setMobileNav("mobileCharts");
+
+}

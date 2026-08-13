@@ -44,7 +44,7 @@ main{
 
 .tabs{
   display:grid;
-  grid-template-columns:repeat(4,1fr);
+  grid-template-columns:repeat(5,1fr);
   gap:8px;
   margin:15px 0 20px;
 }
@@ -429,7 +429,7 @@ input{
   bottom:0;
   z-index:70;
   display:grid;
-  grid-template-columns:repeat(4,1fr);
+  grid-template-columns:repeat(5,1fr);
   gap:4px;
   padding:
     8px
