@@ -376,6 +376,13 @@ function render(){
 
 
      <button
+      class="videoButton"
+      onclick="openVideo('${ex.gif || ex.photo}','${ex.name}')"
+     >
+      ▶ Video
+     </button>
+
+     <button
       class="timerButton"
       onclick="startTimer(${ex.rest})"
      >
