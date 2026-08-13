@@ -1,20 +1,21 @@
 {
- "macros":[
-  "kcal",
+ "macros": [
+  "energy_kcal",
   "protein",
-  "carbs",
-  "fats",
+  "carbohydrates",
+  "fat",
   "fiber"
  ],
- "micros":[
-  "vitaminA",
-  "vitaminC",
-  "vitaminD",
-  "vitaminE",
+ "micronutrients": [
   "calcium",
   "iron",
   "magnesium",
   "potassium",
-  "zinc"
+  "zinc",
+  "vitamin_a",
+  "vitamin_c",
+  "vitamin_d",
+  "vitamin_e",
+  "vitamin_k"
  ]
 }
