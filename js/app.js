@@ -925,7 +925,7 @@ function showGif(src, name){
 }
 
 function setMobileNav(active){
- const ids = ["mobileScheda","mobileHistory","mobileProgress","mobileFavorites","mobileEditHistory","mobileBackup"];
+ const ids = ["mobileScheda","mobileHistory","mobileProgress","mobileFavorites","mobileEditHistory","mobileBackup","mobileWeight"];
 
  ids.forEach(id=>{
   const el=document.getElementById(id);
@@ -2574,6 +2574,170 @@ function generatePDFReport(){
 
 
  toast("PDF creato ✓");
+
+}
+
+
+
+/* =========================
+   PESO CORPOREO
+========================= */
+
+function getWeights(){
+
+ try{
+  return JSON.parse(
+   localStorage.getItem("bodyWeight") || "[]"
+  );
+ }catch{
+  return [];
+ }
+
+}
+
+
+function showWeight(){
+
+ const content =
+ document.getElementById("content");
+
+
+ const weights=getWeights();
+
+
+ let html=`
+
+ <div class="titleBox">
+  <small>TRACKING</small>
+  <h2>⚖️ Peso corporeo</h2>
+  <p>Monitora la tua evoluzione</p>
+ </div>
+
+
+ <div class="exercise">
+
+  <div class="exerciseBody">
+
+   <input
+    id="weightInput"
+    type="number"
+    step="0.1"
+    placeholder="Peso in kg"
+   >
+
+   <button
+    class="backupButton"
+    onclick="saveBodyWeight()"
+   >
+    Salva peso
+   </button>
+
+  </div>
+
+ </div>
+
+ `;
+
+
+ html+=`
+
+ <div class="titleBox">
+  <small>STORICO</small>
+  <h2>Progressione peso</h2>
+ </div>
+
+ `;
+
+
+ if(!weights.length){
+
+  html+=`
+   <div class="exercise">
+    <div class="exerciseBody">
+     Nessun peso registrato.
+    </div>
+   </div>
+  `;
+
+ }else{
+
+  weights.forEach(item=>{
+
+   html+=`
+
+   <div class="exercise">
+
+    <div class="exerciseBody">
+
+     <div class="exerciseTop">
+
+      <h3>
+       ${item.kg} kg
+      </h3>
+
+      <div class="prescription">
+       ${item.date}
+      </div>
+
+     </div>
+
+    </div>
+
+   </div>
+
+   `;
+
+  });
+
+ }
+
+
+ content.innerHTML=html;
+
+ setMobileNav("mobileWeight");
+
+}
+
+
+function saveBodyWeight(){
+
+ const input=
+ document.getElementById("weightInput");
+
+
+ const kg=
+ parseFloat(input.value);
+
+
+ if(!kg){
+  toast("Inserisci un peso valido");
+  return;
+ }
+
+
+ let weights=getWeights();
+
+
+ weights.unshift({
+
+  kg:kg,
+
+  date:
+  new Date()
+  .toLocaleDateString("it-IT")
+
+ });
+
+
+ localStorage.setItem(
+  "bodyWeight",
+  JSON.stringify(weights)
+ );
+
+
+ toast("Peso salvato ✓");
+
+ showWeight();
 
 }
 
