@@ -10,7 +10,6 @@ A:{
    prescription:"4 × 6-8",
    sets:4,
    rest:120,
-   photo:"https://loremflickr.com/800/450/benchpress,gym?lock=11"
   },
 
   {
@@ -18,7 +17,6 @@ A:{
    prescription:"3 × 8-10",
    sets:3,
    rest:90,
-   photo:"https://loremflickr.com/800/450/dumbbell,benchpress,gym?lock=12"
   },
 
   {
@@ -26,7 +24,6 @@ A:{
    prescription:"3 × 12-15",
    sets:3,
    rest:60,
-   photo:"https://loremflickr.com/800/450/cable,chest,gym?lock=13"
   },
 
   {
@@ -34,7 +31,6 @@ A:{
    prescription:"3 × 8-10",
    sets:3,
    rest:90,
-   photo:"https://loremflickr.com/800/450/shoulderpress,gym?lock=14"
   },
 
   {
@@ -42,7 +38,6 @@ A:{
    prescription:"3 × 15",
    sets:3,
    rest:60,
-   photo:"https://loremflickr.com/800/450/lateralraise,dumbbell,gym?lock=15"
   },
 
   {
@@ -50,7 +45,6 @@ A:{
    prescription:"3 × 10-12",
    sets:3,
    rest:60,
-   photo:"https://loremflickr.com/800/450/triceps,cable,gym?lock=16"
   },
 
   {
@@ -58,7 +52,6 @@ A:{
    prescription:"3 × 10-12",
    sets:3,
    rest:60,
-   photo:"https://loremflickr.com/800/450/triceps,barbell,gym?lock=17"
   }
 
  ]
@@ -74,7 +67,6 @@ B:{
    prescription:"4 × 8-10",
    sets:4,
    rest:90,
-   photo:"https://loremflickr.com/800/450/latpulldown,gym?lock=21"
   },
 
   {
@@ -82,7 +74,6 @@ B:{
    prescription:"3 × 10",
    sets:3,
    rest:90,
-   photo:"https://loremflickr.com/800/450/rowing,machine,gym?lock=22"
   },
 
   {
@@ -90,7 +81,6 @@ B:{
    prescription:"3 × 10-12",
    sets:3,
    rest:75,
-   photo:"https://loremflickr.com/800/450/seatedrow,gym?lock=23"
   },
 
   {
@@ -98,7 +88,6 @@ B:{
    prescription:"3 × 15",
    sets:3,
    rest:60,
-   photo:"https://loremflickr.com/800/450/cable,shoulder,gym?lock=24"
   },
 
   {
@@ -106,7 +95,6 @@ B:{
    prescription:"3 × 8-10",
    sets:3,
    rest:75,
-   photo:"https://loremflickr.com/800/450/barbell,curl,gym?lock=25"
   },
 
   {
@@ -114,7 +102,6 @@ B:{
    prescription:"3 × 10-12",
    sets:3,
    rest:60,
-   photo:"https://loremflickr.com/800/450/dumbbell,curl,gym?lock=26"
   },
 
   {
@@ -122,7 +109,6 @@ B:{
    prescription:"2 × 12",
    sets:2,
    rest:60,
-   photo:"https://loremflickr.com/800/450/hammer,curl,gym?lock=27"
   },
 
   {
@@ -130,7 +116,6 @@ B:{
    prescription:"3 × 15",
    sets:3,
    rest:45,
-   photo:"https://loremflickr.com/800/450/abs,cable,gym?lock=28"
   },
 
   {
@@ -138,7 +123,6 @@ B:{
    prescription:"3 × 45-60 sec",
    sets:3,
    rest:45,
-   photo:"https://loremflickr.com/800/450/plank,fitness?lock=29"
   }
 
  ]
@@ -154,7 +138,6 @@ C:{
    prescription:"4 × 8",
    sets:4,
    rest:120,
-   photo:"https://loremflickr.com/800/450/squat,gym?lock=31"
   },
 
   {
@@ -162,7 +145,6 @@ C:{
    prescription:"4 × 10",
    sets:4,
    rest:90,
-   photo:"https://loremflickr.com/800/450/legpress,gym?lock=32"
   },
 
   {
@@ -170,7 +152,6 @@ C:{
    prescription:"3 × 12",
    sets:3,
    rest:75,
-   photo:"https://loremflickr.com/800/450/legcurl,gym?lock=33"
   },
 
   {
@@ -178,7 +159,6 @@ C:{
    prescription:"3 × 12",
    sets:3,
    rest:75,
-   photo:"https://loremflickr.com/800/450/legextension,gym?lock=34"
   },
 
   {
@@ -186,7 +166,6 @@ C:{
    prescription:"4 × 15-20",
    sets:4,
    rest:60,
-   photo:"https://loremflickr.com/800/450/calfraise,gym?lock=35"
   },
 
   {
@@ -194,7 +173,6 @@ C:{
    prescription:"3 × 15",
    sets:3,
    rest:60,
-   photo:"https://loremflickr.com/800/450/lateralraise,gym?lock=36"
   },
 
   {
@@ -202,7 +180,6 @@ C:{
    prescription:"3 × 15",
    sets:3,
    rest:45,
-   photo:"https://loremflickr.com/800/450/legraise,abs?lock=37"
   },
 
   {
@@ -210,7 +187,6 @@ C:{
    prescription:"3 × 20",
    sets:3,
    rest:45,
-   photo:"https://loremflickr.com/800/450/abdominal,gym?lock=38"
   }
 
  ]
