@@ -134,35 +134,35 @@ C:{
  exercises:[
 
   {
-   name:"Squat / Multipower",
+   name:"Squat / Multipower", photo:"images/squat.jpg", gif:"gifs/squat.gif",
    prescription:"4 × 8",
    sets:4,
    rest:120,
   },
 
   {
-   name:"Leg Press",
+   name:"Leg Press", photo:"images/leg-press.jpg", gif:"gifs/leg-press.gif",
    prescription:"4 × 10",
    sets:4,
    rest:90,
   },
 
   {
-   name:"Leg Curl",
+   name:"Leg Curl", photo:"images/leg-curl.jpg", gif:"gifs/leg-curl.gif",
    prescription:"3 × 12",
    sets:3,
    rest:75,
   },
 
   {
-   name:"Leg Extension",
+   name:"Leg Extension", photo:"images/leg-extension.jpg", gif:"gifs/leg-extension.gif",
    prescription:"3 × 12",
    sets:3,
    rest:75,
   },
 
   {
-   name:"Calf Raise",
+   name:"Calf Raise", photo:"images/calf-raise.jpg", gif:"gifs/calf-raise.gif",
    prescription:"4 × 15-20",
    sets:4,
    rest:60,
@@ -176,14 +176,14 @@ C:{
   },
 
   {
-   name:"Leg Raise",
+   name:"Leg Raise", photo:"images/leg-raise.jpg", gif:"gifs/leg-raise.gif",
    prescription:"3 × 15",
    sets:3,
    rest:45,
   },
 
   {
-   name:"Crunch macchina",
+   name:"Crunch macchina", photo:"images/crunch-macchina.jpg", gif:"gifs/crunch-macchina.gif",
    prescription:"3 × 20",
    sets:3,
    rest:45,
