@@ -486,3 +486,68 @@ font-weight:700;
 .videoButton:active{
 transform:scale(.98);
 }
+
+/* TIMER FULLSCREEN */
+
+#timerOverlay{
+ position:fixed;
+ inset:0;
+ z-index:99999;
+ display:flex;
+ align-items:center;
+ justify-content:center;
+ padding:24px;
+ background:rgba(5,7,11,.94);
+ backdrop-filter:blur(16px);
+ -webkit-backdrop-filter:blur(16px);
+}
+
+.timerPanel{
+ width:100%;
+ max-width:420px;
+ text-align:center;
+}
+
+.timerLabel{
+ color:#8daaff;
+ font-size:12px;
+ font-weight:900;
+ letter-spacing:1.5px;
+ margin-bottom:12px;
+}
+
+.timerBig{
+ color:white;
+ font-size:82px;
+ font-weight:900;
+ letter-spacing:-3px;
+ line-height:1;
+ margin-bottom:32px;
+}
+
+.timerControls{
+ display:grid;
+ grid-template-columns:1fr 1fr;
+ gap:10px;
+}
+
+.timerControls button{
+ min-height:52px;
+ border:0;
+ border-radius:15px;
+ background:#202632;
+ color:white;
+ font-weight:800;
+ font-size:15px;
+}
+
+.timerControls .timerStop{
+ grid-column:1/-1;
+ background:#582126;
+ color:#ff9098;
+}
+
+.timerDone{
+ color:#72eba5;
+}
+

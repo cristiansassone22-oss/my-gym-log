@@ -431,70 +431,119 @@ function startTimer(seconds){
 
  clearInterval(timerInterval);
 
- let remaining=seconds;
+ let remaining = seconds;
 
- const box=
- document.getElementById("timer");
+ let old = document.getElementById("timerOverlay");
+ if(old) old.remove();
 
- box.style.display="block";
+ const overlay = document.createElement("div");
+ overlay.id = "timerOverlay";
 
- updateTimer(remaining);
+ overlay.innerHTML = `
+  <div class="timerPanel">
 
+   <div class="timerLabel">RECUPERO</div>
 
- timerInterval=setInterval(()=>{
+   <div id="timerBig" class="timerBig"></div>
+
+   <div class="timerControls">
+    <button onclick="changeTimer(-30)">-30 sec</button>
+    <button onclick="changeTimer(30)">+30 sec</button>
+    <button class="timerStop" onclick="stopTimer()">Stop</button>
+   </div>
+
+  </div>
+ `;
+
+ document.body.appendChild(overlay);
+
+ function renderTimer(){
+  const min = Math.floor(remaining / 60);
+  const sec = remaining % 60;
+
+  const el = document.getElementById("timerBig");
+  if(el){
+   el.textContent =
+    `${min}:${String(sec).padStart(2,"0")}`;
+  }
+ }
+
+ window.changeTimer = function(value){
+  remaining = Math.max(0, remaining + value);
+  renderTimer();
+ };
+
+ window.stopTimer = function(){
+  clearInterval(timerInterval);
+  document.getElementById("timerOverlay")?.remove();
+ };
+
+ renderTimer();
+
+ timerInterval = setInterval(()=>{
 
   remaining--;
 
-  updateTimer(remaining);
+  renderTimer();
 
-
-  if(remaining<=0){
+  if(remaining <= 0){
 
    clearInterval(timerInterval);
 
-   document.getElementById(
-    "timerText"
-   ).innerText="VAI!";
+   const el = document.getElementById("timerBig");
 
-   box.style.background=
-   "#20c777";
-
-
-   if("vibrate" in navigator){
-    navigator.vibrate(
-     [250,100,250]
-    );
+   if(el){
+    el.textContent = "VAI!";
+    el.classList.add("timerDone");
    }
 
+   if("vibrate" in navigator){
+    navigator.vibrate([250,120,250,120,350]);
+   }
+
+   try{
+    const AudioCtx =
+      window.AudioContext || window.webkitAudioContext;
+
+    const ctx = new AudioCtx();
+
+    const playBeep = (freq, start, duration) => {
+     const osc = ctx.createOscillator();
+     const gain = ctx.createGain();
+
+     osc.frequency.value = freq;
+     osc.type = "sine";
+
+     osc.connect(gain);
+     gain.connect(ctx.destination);
+
+     gain.gain.setValueAtTime(
+      0.25,
+      ctx.currentTime + start
+     );
+
+     gain.gain.exponentialRampToValueAtTime(
+      0.001,
+      ctx.currentTime + start + duration
+     );
+
+     osc.start(ctx.currentTime + start);
+     osc.stop(ctx.currentTime + start + duration);
+    };
+
+    playBeep(880,0,0.35);
+    playBeep(1050,0.45,0.35);
+    playBeep(1250,0.9,0.55);
+
+   }catch(e){}
 
    setTimeout(()=>{
-
-    box.style.display="none";
-
-    box.style.background=
-    "#4c7dff";
-
-   },2500);
+    document.getElementById("timerOverlay")?.remove();
+   },3000);
 
   }
 
  },1000);
-
-}
-
-
-function updateTimer(sec){
-
- const min=
- Math.floor(sec/60);
-
- const seconds=
- sec%60;
-
- document.getElementById(
-  "timerText"
- ).innerText=
- `${min}:${String(seconds).padStart(2,"0")}`;
 
 }
 
