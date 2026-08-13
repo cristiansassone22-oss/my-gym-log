@@ -1,4 +1,74 @@
 
+
+function getCompletedSets(){
+
+ return JSON.parse(
+  localStorage.getItem("completedSets") || "{}"
+ );
+
+}
+
+
+function saveCompletedSets(data){
+
+ localStorage.setItem(
+  "completedSets",
+  JSON.stringify(data)
+ );
+
+}
+
+
+function toggleSetComplete(btn, day, exercise, setIndex){
+
+ let data=getCompletedSets();
+
+ if(!data[day]){
+  data[day]={};
+ }
+
+ if(!data[day][exercise]){
+  data[day][exercise]=[];
+ }
+
+
+ const list=data[day][exercise];
+
+
+ if(list.includes(setIndex)){
+
+  data[day][exercise]=
+   list.filter(i=>i!==setIndex);
+
+  btn.classList.remove("completed");
+  btn.textContent="○";
+
+
+ }else{
+
+  list.push(setIndex);
+
+  btn.classList.add("completed");
+  btn.textContent="✓";
+
+ }
+
+
+ saveCompletedSets(data);
+
+}
+
+
+
+function isSetCompleted(day, exercise, setIndex){
+
+ const data=getCompletedSets();
+
+ return data[day]?.[exercise]?.includes(setIndex) || false;
+
+}
+
+
 function renderExerciseCard(ex, i, last){
 
  return `
@@ -50,7 +120,7 @@ function renderExerciseCard(ex, i, last){
 
   <div class="newSets">
 
-   ${renderNewSets(i, ex.sets)}
+   ${renderNewSets(i, ex.name, ex.sets)}
 
   </div>
 
@@ -79,7 +149,7 @@ function renderExerciseCard(ex, i, last){
 }
 
 
-function renderNewSets(exIndex,total){
+function renderNewSets(exIndex,exercise,total){
 
  let html="";
 
@@ -110,10 +180,10 @@ function renderNewSets(exIndex,total){
     >
 
     <button
-     class="setCheck"
-     onclick="toggleSetComplete(this)"
+     class="setCheck ${isSetCompleted(currentDay, exercise, s) ? "completed" : ""}"
+     onclick="toggleSetComplete(this,'${currentDay}','${exercise}',${s})"
     >
-     ○
+     ${isSetCompleted(currentDay, exercise, s) ? "✓" : "○"}
     </button>
 
    </div>
@@ -126,16 +196,4 @@ function renderNewSets(exIndex,total){
 
 }
 
-
-
-function toggleSetComplete(btn){
-
- btn.classList.toggle("completed");
-
- btn.textContent =
- btn.classList.contains("completed")
- ? "✓"
- : "○";
-
-}
 
