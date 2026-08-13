@@ -876,3 +876,76 @@ showProgress = function(){
  _oldShowProgress();
  setMobileNav("mobileProgress");
 };
+
+
+function openVideo(src,title){
+
+ if(!src) return;
+
+ const old=document.getElementById("videoModal");
+ if(old) old.remove();
+
+ const modal=document.createElement("div");
+ modal.id="videoModal";
+
+ modal.style.cssText=`
+ position:fixed;
+ inset:0;
+ background:rgba(0,0,0,.94);
+ display:flex;
+ align-items:center;
+ justify-content:center;
+ z-index:99999;
+ padding:18px;
+ `;
+
+ modal.innerHTML=`
+ <div style="
+ width:100%;
+ max-width:520px;
+ ">
+
+ <div style="
+ display:flex;
+ justify-content:space-between;
+ align-items:center;
+ color:white;
+ margin-bottom:14px;
+ ">
+
+ <strong>${title}</strong>
+
+ <button
+ onclick="document.getElementById('videoModal').remove()"
+ style="
+ background:#2962ff;
+ color:white;
+ border:0;
+ border-radius:12px;
+ padding:10px 16px;
+ font-weight:700;
+ ">
+ Chiudi
+ </button>
+
+ </div>
+
+ <img
+ src="${src}"
+ style="
+ width:100%;
+ border-radius:18px;
+ background:#111;
+ display:block;
+ ">
+
+ </div>
+ `;
+
+ modal.onclick=e=>{
+   if(e.target===modal) modal.remove();
+ };
+
+ document.body.appendChild(modal);
+
+}
