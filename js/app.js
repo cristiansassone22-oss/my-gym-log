@@ -925,7 +925,7 @@ function showGif(src, name){
 }
 
 function setMobileNav(active){
- const ids = ["mobileScheda","mobileHistory","mobileProgress","mobileFavorites","mobileEditHistory"];
+ const ids = ["mobileScheda","mobileHistory","mobileProgress","mobileFavorites","mobileEditHistory","mobileBackup"];
 
  ids.forEach(id=>{
   const el=document.getElementById(id);
@@ -2155,5 +2155,195 @@ function deleteWorkout(index){
  toast("Allenamento eliminato");
 
  showEditHistory();
+}
+
+
+
+/* =========================
+   BACKUP DATI
+========================= */
+
+function showBackup(){
+
+ const content =
+ document.getElementById("content");
+
+ content.innerHTML = `
+
+ <div class="titleBox">
+  <small>BACKUP</small>
+  <h2>📦 Gestione dati</h2>
+  <p>Salva o ripristina i tuoi allenamenti</p>
+ </div>
+
+
+ <div class="exercise">
+
+  <div class="exerciseBody">
+
+   <button
+    class="backupButton"
+    onclick="exportBackup()"
+   >
+    📤 Esporta dati
+   </button>
+
+
+   <label class="backupButton importLabel">
+
+    📥 Importa dati
+
+    <input
+     type="file"
+     accept=".json"
+     onchange="importBackup(event)"
+     hidden
+    >
+
+   </label>
+
+
+  </div>
+
+ </div>
+
+ `;
+
+ setMobileNav("mobileBackup");
+
+}
+
+
+function exportBackup(){
+
+ const backup={
+
+  version:1,
+
+  date:new Date().toISOString(),
+
+  gymHistory:
+  localStorage.getItem("gymHistory"),
+
+  notes:
+  Object.keys(localStorage)
+  .filter(k=>k.startsWith("gymNote::"))
+  .reduce((obj,k)=>{
+    obj[k]=localStorage.getItem(k);
+    return obj;
+  },{}),
+
+  favorites:
+  localStorage.getItem("gymFavorites")
+
+ };
+
+
+ const blob =
+ new Blob(
+  [
+   JSON.stringify(
+    backup,
+    null,
+    2
+   )
+  ],
+  {
+   type:"application/json"
+  }
+ );
+
+
+ const url =
+ URL.createObjectURL(blob);
+
+
+ const a =
+ document.createElement("a");
+
+ a.href=url;
+
+ a.download=
+ "my-gym-log-backup.json";
+
+
+ a.click();
+
+
+ URL.revokeObjectURL(url);
+
+
+ toast("Backup creato ✓");
+
+}
+
+
+function importBackup(event){
+
+ const file =
+ event.target.files[0];
+
+ if(!file) return;
+
+
+ const reader =
+ new FileReader();
+
+
+ reader.onload=function(e){
+
+  const backup =
+  JSON.parse(e.target.result);
+
+
+  if(backup.gymHistory){
+
+   localStorage.setItem(
+    "gymHistory",
+    backup.gymHistory
+   );
+
+  }
+
+
+  if(backup.favorites){
+
+   localStorage.setItem(
+    "gymFavorites",
+    backup.favorites
+   );
+
+  }
+
+
+  if(backup.notes){
+
+   Object.entries(
+    backup.notes
+   ).forEach(([k,v])=>{
+
+    localStorage.setItem(
+     k,
+     v
+    );
+
+   });
+
+  }
+
+
+  toast("Dati ripristinati ✓");
+
+  setTimeout(
+   ()=>location.reload(),
+   800
+  );
+
+
+ };
+
+
+ reader.readAsText(file);
+
 }
 
