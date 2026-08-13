@@ -1159,3 +1159,61 @@ input:focus{
 }
 
 
+
+
+/* =========================
+   NUOVA CARD ESERCIZIO
+========================= */
+
+.exerciseHeader{
+ display:flex;
+ gap:14px;
+ align-items:center;
+ padding:14px;
+}
+
+.exerciseThumb{
+ width:86px;
+ height:86px;
+ object-fit:contain;
+ border-radius:18px;
+ background:#0d1118;
+ flex-shrink:0;
+}
+
+.exerciseTitle{
+ flex:1;
+}
+
+.exerciseNameRow{
+ display:flex;
+ align-items:center;
+ justify-content:space-between;
+ gap:8px;
+}
+
+.exerciseNameRow h3{
+ margin:0;
+ font-size:17px;
+}
+
+.exerciseNameRow .favoriteButton{
+ width:36px;
+ height:36px;
+}
+
+
+.last strong{
+ color:white;
+ font-size:14px;
+}
+
+
+.exerciseButtons{
+ grid-template-columns:1fr 1fr;
+}
+
+.exerciseButtons button{
+ min-height:44px;
+}
+

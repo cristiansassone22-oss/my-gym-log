@@ -331,86 +331,84 @@ function render(){
 
   <div class="exercise">
 
-   <img
-    class="exercisePhoto"
-    src="${ex.gif || ex.photo}"
-    alt="${ex.name}"
-    loading="lazy"
-   >
+   <div class="exerciseHeader">
 
-   <div class="exerciseBody">
+    <img
+     class="exerciseThumb"
+     src="${ex.gif || ex.photo}"
+     alt="${ex.name}"
+     loading="lazy"
+    >
 
-    <div class="exerciseTop">
+    <div class="exerciseTitle">
 
-     <div>
+     <div class="exerciseNameRow">
+
       <h3>${ex.name}</h3>
-     </div>
-
-     <div class="exerciseTopActions">
 
       <button
        class="favoriteButton ${isFavorite(currentDay, ex.name) ? 'active' : ''}"
        onclick="toggleFavorite('${currentDay}','${ex.name}',this)"
-       aria-label="Preferito"
       >
        ${isFavorite(currentDay, ex.name) ? '★' : '☆'}
       </button>
 
-      <div class="prescription">
-       ${ex.prescription}
-      </div>
+     </div>
 
+     <div class="prescription">
+      ${ex.prescription}
      </div>
 
     </div>
 
-
-    <div class="last">
-
-     ${
-      last
-      ? "Ultimo carico: "+last+" kg"
-      : "Primo allenamento"
-     }
-
-    </div>
+   </div>
 
 
-    ${sets}
+   <div class="last">
+
+    ${
+     last
+     ? "Ultimo carico: <strong>"+last+" kg</strong>"
+     : "Primo allenamento"
+    }
+
+   </div>
 
 
-    <div class="exerciseButtons">
-
-     <button
-      class="lastButton"
-      onclick="useLast(${i},${last || 0})"
-     >
-      Usa ultimo
-     </button>
+   ${sets}
 
 
-     <button
-      class="historyButton"
-      onclick="showExerciseHistory('${ex.name}','${currentDay}')"
-     >
-      📈 Carichi
-     </button>
+   <div class="exerciseButtons">
 
-     <button
-      class="noteButton"
-      onclick="openExerciseNote('${currentDay}','${ex.name}')"
-     >
-      📝 Note
-     </button>
+    <button
+     class="historyButton"
+     onclick="showExerciseHistory('${ex.name}','${currentDay}')"
+    >
+     📈 Storico
+    </button>
 
-     <button
-      class="timerButton"
-      onclick="startTimer(${ex.rest})"
-     >
-      ⏱ ${ex.rest} sec
-     </button>
+    <button
+     class="noteButton"
+     onclick="openExerciseNote('${currentDay}','${ex.name}')"
+    >
+     📝 Note
+    </button>
 
-    </div>
+    <button
+     class="timerButton"
+     onclick="startTimer(${ex.rest})"
+    >
+     ⏱ ${ex.rest} sec
+    </button>
+
+    <button
+     class="lastButton"
+     onclick="useLast(${i},${last || 0})"
+    >
+     Usa ultimo
+    </button>
+
+   </div>
 
    </div>
 
