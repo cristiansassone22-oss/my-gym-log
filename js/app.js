@@ -2190,7 +2190,7 @@ function showBackup(){
 
    <button
     class="backupButton"
-    onclick="generatePDFReport()"
+    onclick="generateProPDF()"
    >
     📄 Genera Report PDF
    </button>
@@ -2738,6 +2738,227 @@ function saveBodyWeight(){
  toast("Peso salvato ✓");
 
  showWeight();
+
+}
+
+
+
+/* =========================
+   REPORT PDF PRO
+========================= */
+
+function generateProPDF(){
+
+ const {
+  jsPDF
+ } = window.jspdf;
+
+
+ const doc =
+ new jsPDF();
+
+
+ const history =
+ JSON.parse(
+  localStorage.getItem("gymHistory") || "[]"
+ );
+
+
+ const weights =
+ JSON.parse(
+  localStorage.getItem("bodyWeight") || "[]"
+ );
+
+
+ let y=20;
+
+
+ function title(text){
+
+  doc.setFontSize(16);
+  doc.text(text,20,y);
+  y+=10;
+
+ }
+
+
+ function line(text){
+
+  if(y>280){
+
+   doc.addPage();
+   y=20;
+
+  }
+
+  doc.setFontSize(10);
+  doc.text(text,20,y);
+  y+=6;
+
+ }
+
+
+ // COPERTINA
+
+ doc.setFontSize(22);
+
+ doc.text(
+  "MY GYM LOG",
+  20,
+  y
+ );
+
+ y+=12;
+
+ doc.setFontSize(14);
+
+ doc.text(
+  "Progress Report",
+  20,
+  y
+ );
+
+
+ y+=15;
+
+
+ line(
+  "Data report: "+
+  new Date()
+  .toLocaleDateString("it-IT")
+ );
+
+
+ line(
+  "Allenamenti registrati: "+
+  history.length
+ );
+
+
+ if(weights.length){
+
+  title("Peso corporeo");
+
+  line(
+   "Attuale: "+
+   weights[0].kg+
+   " kg"
+  );
+
+  if(weights.length>1){
+
+   const diff =
+   weights[0].kg -
+   weights[weights.length-1].kg;
+
+   line(
+    "Variazione: "+
+    (diff>0?"+":"")+
+    diff.toFixed(1)+
+    " kg"
+   );
+
+  }
+
+ }
+
+
+ title("Record esercizi");
+
+
+ const records={};
+
+
+ history.forEach(session=>{
+
+  session.exercises.forEach(ex=>{
+
+   const values =
+   ex.sets
+   .map(s=>parseFloat(s.kg))
+   .filter(n=>!isNaN(n));
+
+
+   if(values.length){
+
+    const max=Math.max(...values);
+
+    if(!records[ex.name] ||
+       max>records[ex.name]){
+
+      records[ex.name]=max;
+
+    }
+
+   }
+
+  });
+
+ });
+
+
+ Object.entries(records)
+ .forEach(([name,value])=>{
+
+  line(
+   name+
+   ": "+
+   value+
+   " kg"
+  );
+
+ });
+
+
+ title("Storico allenamenti");
+
+
+ history.forEach(session=>{
+
+  line(
+   "Giorno "+
+   session.day+
+   " - "+
+   new Date(session.date)
+   .toLocaleDateString("it-IT")
+  );
+
+
+  session.exercises.forEach(ex=>{
+
+   const sets =
+   ex.sets
+   .filter(s=>s.kg || s.reps)
+   .map(
+    s=>`${s.kg||"-"}kg x ${s.reps||"-"}`
+   )
+   .join(" | ");
+
+
+   if(sets){
+
+    line(
+     "  "+
+     ex.name+
+     ": "+
+     sets
+    );
+
+   }
+
+  });
+
+ });
+
+
+ doc.save(
+  "My-Gym-Log-Pro-Report.pdf"
+ );
+
+
+ toast(
+  "Report PRO creato ✓"
+ );
 
 }
 
