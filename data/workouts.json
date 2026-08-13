@@ -1,0 +1,64 @@
+{
+  "A": {
+    "title": "Giorno A",
+    "subtitle": "Petto • Spalle • Tricipiti",
+    "exercises": [
+      {
+        "id": "0025",
+        "name": "Panca piana bilanciere",
+        "datasetName": "barbell bench press",
+        "prescription": "4 × 6-8",
+        "sets": 4,
+        "rest": 120
+      },
+      {
+        "id": "0314",
+        "name": "Panca inclinata manubri",
+        "datasetName": "dumbbell incline bench press",
+        "prescription": "3 × 8-10",
+        "sets": 3,
+        "rest": 90
+      },
+      {
+        "id": "0227",
+        "name": "Croci ai cavi",
+        "datasetName": "cable standing fly",
+        "prescription": "3 × 12-15",
+        "sets": 3,
+        "rest": 60
+      },
+      {
+        "id": "0405",
+        "name": "Shoulder Press",
+        "datasetName": "dumbbell seated shoulder press",
+        "prescription": "3 × 8-10",
+        "sets": 3,
+        "rest": 90
+      },
+      {
+        "id": "0334",
+        "name": "Alzate laterali",
+        "datasetName": "dumbbell lateral raise",
+        "prescription": "3 × 15",
+        "sets": 3,
+        "rest": 60
+      },
+      {
+        "id": "0241",
+        "name": "Pushdown ai cavi",
+        "datasetName": "cable triceps pushdown (v-bar)",
+        "prescription": "3 × 10-12",
+        "sets": 3,
+        "rest": 60
+      },
+      {
+        "id": "0453",
+        "name": "French Press EZ",
+        "datasetName": "ez barbell seated triceps extension",
+        "prescription": "3 × 10-12",
+        "sets": 3,
+        "rest": 60
+      }
+    ]
+  }
+}

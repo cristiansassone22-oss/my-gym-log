@@ -1,0 +1,243 @@
+:root{
+  --bg:#0a0d12;
+  --card:#151922;
+  --card2:#1d2330;
+  --border:#2a3241;
+  --text:#f5f7fa;
+  --muted:#949eae;
+  --blue:#4c7dff;
+  --green:#20c777;
+  --red:#ff5b67;
+}
+
+*{box-sizing:border-box}
+
+body{
+  margin:0;
+  background:var(--bg);
+  color:var(--text);
+  font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+}
+
+header{
+  max-width:720px;
+  margin:auto;
+  padding:24px 18px 10px;
+}
+
+h1{
+  margin:0;
+  font-size:23px;
+}
+
+header p{
+  margin:5px 0;
+  color:var(--muted);
+  font-size:13px;
+}
+
+main{
+  max-width:720px;
+  margin:auto;
+  padding:10px 15px 100px;
+}
+
+.tabs{
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:8px;
+  margin:15px 0 20px;
+}
+
+.tabs button{
+  background:var(--card);
+  color:var(--muted);
+  border:1px solid var(--border);
+  border-radius:13px;
+  padding:13px 5px;
+  font-weight:800;
+}
+
+.tabs button.active{
+  background:var(--blue);
+  color:white;
+  border-color:var(--blue);
+}
+
+.titleBox{
+  background:linear-gradient(135deg,#233157,#111722);
+  border:1px solid #303c58;
+  padding:18px;
+  border-radius:18px;
+  margin-bottom:15px;
+}
+
+.titleBox small{
+  color:#8daaff;
+  font-weight:800;
+}
+
+.titleBox h2{
+  margin:5px 0 3px;
+}
+
+.titleBox p{
+  margin:0;
+  color:var(--muted);
+}
+
+.exercise{
+  background:var(--card);
+  border:1px solid var(--border);
+  border-radius:19px;
+  margin-bottom:14px;
+  overflow:hidden;
+}
+
+.exercisePhoto{
+  width:100%;
+  height:180px;
+  object-fit:cover;
+  display:block;
+  background:#222;
+}
+
+.exerciseBody{
+  padding:15px;
+}
+
+.exerciseTop{
+  display:flex;
+  justify-content:space-between;
+  gap:10px;
+}
+
+.exercise h3{
+  margin:0;
+  font-size:18px;
+}
+
+.prescription{
+  color:#9bb2ff;
+  font-size:12px;
+  white-space:nowrap;
+}
+
+.last{
+  color:var(--muted);
+  font-size:12px;
+  margin-top:5px;
+  margin-bottom:13px;
+}
+
+.set{
+  display:grid;
+  grid-template-columns:38px 1fr 1fr;
+  gap:8px;
+  margin-bottom:8px;
+  align-items:center;
+}
+
+.set span{
+  text-align:center;
+  color:var(--muted);
+  font-size:12px;
+}
+
+input{
+  width:100%;
+  border-radius:11px;
+  border:1px solid #323a4a;
+  background:#0d1118;
+  color:white;
+  padding:12px 10px;
+  font-size:16px;
+}
+
+.exerciseButtons{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:8px;
+  margin-top:12px;
+}
+
+.exerciseButtons button{
+  border:0;
+  border-radius:11px;
+  padding:11px;
+  font-weight:800;
+}
+
+.lastButton{
+  background:#262d3a;
+  color:white;
+}
+
+.timerButton{
+  background:#193c2b;
+  color:#75eda8;
+}
+
+.save{
+  position:fixed;
+  bottom:15px;
+  left:50%;
+  transform:translateX(-50%);
+  width:calc(100% - 30px);
+  max-width:690px;
+  border:0;
+  background:var(--blue);
+  color:white;
+  padding:16px;
+  border-radius:15px;
+  font-weight:900;
+  font-size:15px;
+  box-shadow:0 10px 30px rgba(0,0,0,.45);
+}
+
+#timer{
+  display:none;
+  position:fixed;
+  top:15px;
+  left:50%;
+  transform:translateX(-50%);
+  background:var(--blue);
+  color:white;
+  border-radius:18px;
+  padding:12px 22px;
+  z-index:100;
+  box-shadow:0 8px 35px rgba(0,0,0,.5);
+  text-align:center;
+}
+
+#timer strong{
+  display:block;
+  font-size:27px;
+}
+
+#timer small{
+  opacity:.8;
+}
+
+#toast{
+  opacity:0;
+  pointer-events:none;
+  position:fixed;
+  bottom:85px;
+  left:50%;
+  transform:translateX(-50%);
+  background:var(--green);
+  color:#05160d;
+  padding:11px 20px;
+  border-radius:100px;
+  font-weight:900;
+  transition:.2s;
+}
+
+#toast.show{opacity:1}
+
+@media(min-width:700px){
+  .exercisePhoto{
+    height:240px;
+  }
+}
