@@ -377,7 +377,7 @@ function render(){
 
      <button
       class="historyButton"
-      onclick="showExerciseHistory('${ex.name}')"
+      onclick="showExerciseHistory('${ex.name}','${currentDay}')"
      >
       📈 Carichi
      </button>
@@ -959,7 +959,7 @@ function openVideo(src,title){
 
 
 
-function showExerciseHistory(name){
+function showExerciseHistory(name, day){
 
  const history =
  JSON.parse(
@@ -969,9 +969,11 @@ function showExerciseHistory(name){
  const content =
  document.getElementById("content");
 
- let sessions = [];
+ const sessions = [];
 
  history.forEach(session => {
+
+  if(session.day !== day) return;
 
   const exercise =
   session.exercises?.find(
@@ -981,25 +983,47 @@ function showExerciseHistory(name){
   if(!exercise) return;
 
   const sets =
-  exercise.sets?.filter(
-   s => s.kg || s.reps
-  ) || [];
+  (exercise.sets || []).filter(s => {
+   const kg = String(s.kg ?? "").trim();
+   const reps = String(s.reps ?? "").trim();
+   return kg !== "" || reps !== "";
+  });
 
-  if(sets.length){
-   sessions.push({
-    date: session.date,
-    sets
-   });
-  }
+  if(!sets.length) return;
+
+  sessions.push({
+   date: session.date,
+   sets: sets
+  });
 
  });
 
+ sessions.sort(
+  (a,b) => new Date(b.date) - new Date(a.date)
+ );
+
  let html = `
   <div class="titleBox">
-   <small>CRONOLOGIA</small>
+   <small>GIORNO ${day} · CRONOLOGIA</small>
    <h2>📈 ${name}</h2>
    <p>${sessions.length} allenamenti registrati</p>
   </div>
+
+  <button
+   onclick="openDay('${day}')"
+   style="
+    width:100%;
+    min-height:46px;
+    margin-bottom:12px;
+    border:0;
+    border-radius:14px;
+    background:#252c38;
+    color:white;
+    font-weight:800;
+   "
+  >
+   ← Torna alla scheda
+  </button>
  `;
 
  if(!sessions.length){
@@ -1008,7 +1032,7 @@ function showExerciseHistory(name){
    <div class="exercise">
     <div class="exerciseBody">
      <div class="last">
-      Nessun carico registrato per questo esercizio.
+      Nessun carico registrato.
      </div>
     </div>
    </div>
@@ -1019,19 +1043,44 @@ function showExerciseHistory(name){
   sessions.forEach(item => {
 
    const date =
-   new Date(item.date)
-   .toLocaleDateString("it-IT",{
-    day:"2-digit",
-    month:"2-digit",
-    year:"numeric"
-   });
+   new Date(item.date).toLocaleDateString(
+    "it-IT",
+    {
+     day:"2-digit",
+     month:"2-digit",
+     year:"numeric"
+    }
+   );
 
-   const sets =
-   item.sets
-   .map(
-    s => `${s.kg || "-"} kg × ${s.reps || "-"}`
-   )
-   .join("<br>");
+   const sets = item.sets
+   .map((set,index) => {
+
+    const kg =
+    set.kg !== "" && set.kg != null
+    ? set.kg + " kg"
+    : "-";
+
+    const reps =
+    set.reps !== "" && set.reps != null
+    ? set.reps + " rip."
+    : "-";
+
+    return `
+     <div style="
+      display:grid;
+      grid-template-columns:45px 1fr 1fr;
+      gap:8px;
+      padding:8px 0;
+      border-bottom:1px solid #2a3241;
+     ">
+      <span style="color:#949eae">
+       S${index+1}
+      </span>
+      <strong>${kg}</strong>
+      <span>${reps}</span>
+     </div>
+    `;
+   }).join("");
 
    html += `
     <div class="exercise">
@@ -1041,18 +1090,17 @@ function showExerciseHistory(name){
        <h3>${date}</h3>
       </div>
 
-      <div class="last" style="line-height:1.8">
-       ${sets}
-      </div>
+      ${sets}
 
      </div>
     </div>
    `;
+
   });
 
  }
 
  content.innerHTML = html;
 
- setMobileNav("mobileHistory");
+ setMobileNav("mobileScheda");
 }
