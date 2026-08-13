@@ -1392,3 +1392,111 @@ input:focus{
 
 }
 
+
+
+/* =========================
+   NUOVA CARD SERIE V2
+========================= */
+
+.newSets{
+ margin-top:12px;
+}
+
+
+.newSetRow{
+
+ display:grid;
+ grid-template-columns:38px 1fr 1fr 42px;
+ gap:8px;
+ align-items:center;
+ margin-bottom:8px;
+
+}
+
+
+.newSetRow span{
+
+ color:#8d98aa;
+ font-size:13px;
+ font-weight:900;
+ text-align:center;
+
+}
+
+
+.newSetRow input{
+
+ height:42px;
+ background:#202837;
+ border:1px solid #323a4a;
+ border-radius:12px;
+ color:white;
+ text-align:center;
+ font-size:16px;
+ font-weight:800;
+
+}
+
+
+.newSetRow button{
+
+ height:42px;
+ width:42px;
+ border:0;
+ border-radius:12px;
+ background:#252c38;
+ color:white;
+ font-size:18px;
+
+}
+
+
+
+
+.newSets{
+ margin-top:12px;
+}
+
+
+.newSetRow{
+ display:grid;
+ grid-template-columns:38px 1fr 1fr 42px;
+ gap:8px;
+ align-items:center;
+ margin-bottom:8px;
+}
+
+
+.newSetRow span{
+ color:#8d98aa;
+ font-size:13px;
+ font-weight:900;
+ text-align:center;
+}
+
+
+.newSetRow input{
+ height:42px;
+ width:100%;
+ box-sizing:border-box;
+ background:#202837;
+ border:1px solid #323a4a;
+ border-radius:12px;
+ color:white;
+ text-align:center;
+ font-size:16px;
+ font-weight:800;
+}
+
+
+.newSetRow button{
+ height:42px;
+ width:42px;
+ border:0;
+ border-radius:12px;
+ background:#252c38;
+ color:white;
+ font-size:18px;
+}
+
+

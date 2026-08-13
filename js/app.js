@@ -328,6 +328,8 @@ function toggleWorkSet(btn){
 }
 
 
+const USE_NEW_EXERCISE_CARD = true;
+
 /* RENDER */
 
 function render(){
@@ -390,6 +392,14 @@ function render(){
    </div>
 
    `;
+
+  }
+
+
+  if(USE_NEW_EXERCISE_CARD){
+
+   content.innerHTML += renderExerciseCard(ex,i,last);
+   return;
 
   }
 
