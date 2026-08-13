@@ -1,0 +1,161 @@
+[
+  {
+    "date": "2026-08-11T18:30:00",
+    "day": "B",
+    "exercises": [
+      {
+        "name": "Lat Machine",
+        "sets": [
+          {
+            "kg": "30",
+            "reps": "8"
+          },
+          {
+            "kg": "35",
+            "reps": "8"
+          },
+          {
+            "kg": "40",
+            "reps": "8"
+          },
+          {
+            "kg": "45",
+            "reps": "8"
+          }
+        ]
+      },
+      {
+        "name": "Rematore macchina",
+        "sets": [
+          {
+            "kg": "30",
+            "reps": "10"
+          },
+          {
+            "kg": "30",
+            "reps": "10"
+          },
+          {
+            "kg": "30",
+            "reps": "10"
+          }
+        ]
+      },
+      {
+        "name": "Pulley basso",
+        "sets": [
+          {
+            "kg": "30",
+            "reps": "10"
+          },
+          {
+            "kg": "30",
+            "reps": "10"
+          },
+          {
+            "kg": "30",
+            "reps": "10"
+          }
+        ]
+      },
+      {
+        "name": "Face Pull",
+        "sets": [
+          {
+            "kg": "17",
+            "reps": "10"
+          },
+          {
+            "kg": "17",
+            "reps": "10"
+          },
+          {
+            "kg": "17",
+            "reps": "10"
+          }
+        ]
+      },
+      {
+        "name": "Curl bilanciere EZ",
+        "sets": [
+          {
+            "kg": "10",
+            "reps": "10"
+          },
+          {
+            "kg": "10",
+            "reps": "10"
+          },
+          {
+            "kg": "10",
+            "reps": "10"
+          }
+        ]
+      },
+      {
+        "name": "Curl inclinato manubri",
+        "sets": [
+          {
+            "kg": "6",
+            "reps": "10"
+          },
+          {
+            "kg": "6",
+            "reps": "10"
+          },
+          {
+            "kg": "6",
+            "reps": "8"
+          }
+        ]
+      },
+      {
+        "name": "Hammer Curl",
+        "sets": [
+          {
+            "kg": "6",
+            "reps": "8"
+          },
+          {
+            "kg": "6",
+            "reps": "7"
+          },
+          {
+            "kg": "6",
+            "reps": "6"
+          }
+        ]
+      },
+      {
+        "name": "Crunch ai cavi",
+        "sets": [
+          {
+            "kg": "25",
+            "reps": "20"
+          },
+          {
+            "kg": "25",
+            "reps": "18"
+          },
+          {
+            "kg": "25",
+            "reps": "15"
+          }
+        ]
+      },
+      {
+        "name": "Plank",
+        "sets": [
+          {
+            "kg": "",
+            "reps": "45 sec"
+          },
+          {
+            "kg": "",
+            "reps": "45 sec"
+          }
+        ]
+      }
+    ]
+  }
+]

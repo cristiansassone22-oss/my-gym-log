@@ -1687,3 +1687,60 @@ function showCharts(){
  setMobileNav("mobileCharts");
 
 }
+
+
+async function importManualHistory(){
+
+ if(localStorage.getItem("manualHistoryImportedV1")){
+  return;
+ }
+
+ try{
+
+  const response = await fetch("data/gymHistory.json");
+
+  if(!response.ok) return;
+
+  const imported = await response.json();
+
+  const current =
+  JSON.parse(
+   localStorage.getItem("gymHistory") || "[]"
+  );
+
+  imported.forEach(session => {
+
+   const alreadyExists = current.some(existing =>
+    existing.date === session.date &&
+    existing.day === session.day
+   );
+
+   if(!alreadyExists){
+    current.push(session);
+   }
+
+  });
+
+  current.sort(
+   (a,b) => new Date(b.date) - new Date(a.date)
+  );
+
+  localStorage.setItem(
+   "gymHistory",
+   JSON.stringify(current)
+  );
+
+  localStorage.setItem(
+   "manualHistoryImportedV1",
+   "true"
+  );
+
+  console.log("Storico manuale importato.");
+
+ }catch(error){
+  console.error("Errore import storico:",error);
+ }
+
+}
+
+importManualHistory();
