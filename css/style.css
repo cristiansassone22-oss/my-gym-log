@@ -1590,3 +1590,40 @@ input:focus{
 }
 
 
+
+
+.workoutProgress{
+
+ margin-top:8px;
+ color:#8d98aa;
+ font-size:12px;
+ font-weight:800;
+
+}
+
+
+
+
+.progressLabel{
+ color:#8d98aa;
+ font-size:12px;
+ font-weight:800;
+ margin-bottom:6px;
+}
+
+
+.progressBar{
+ height:8px;
+ background:#202837;
+ border-radius:20px;
+ overflow:hidden;
+}
+
+
+.progressFill{
+ height:100%;
+ background:#20c777;
+ border-radius:20px;
+}
+
+
