@@ -1,3 +1,29 @@
+
+
+function calculateSessionVolume(session){
+
+ let volume=0;
+
+ session.exercises.forEach(ex=>{
+
+  ex.sets.forEach(set=>{
+
+   const kg=parseFloat(set.kg);
+   const reps=parseFloat(set.reps);
+
+   if(!isNaN(kg) && !isNaN(reps)){
+    volume += kg * reps;
+   }
+
+  });
+
+ });
+
+ return Math.round(volume);
+
+}
+
+
 const workouts = {
 
 A:{
@@ -821,6 +847,9 @@ function showHistory(){
      <div class="exerciseTop">
       <h3>Giorno ${session.day}</h3>
       <div class="prescription">${date}</div>
+      <div class="prescription">
+       Volume: ${calculateSessionVolume(session)} kg
+      </div>
      </div>
   `;
 
