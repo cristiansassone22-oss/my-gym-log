@@ -1217,3 +1217,73 @@ input:focus{
  min-height:44px;
 }
 
+
+
+/* =========================
+   CARD ESERCIZIO PREMIUM
+========================= */
+
+.lastCard{
+ display:flex;
+ justify-content:space-between;
+ align-items:center;
+ margin:12px 0;
+ padding:12px 15px;
+ border-radius:15px;
+ background:#202837;
+}
+
+.lastCard small{
+ color:#8d98aa;
+ font-size:11px;
+ font-weight:800;
+}
+
+.lastCard strong{
+ color:white;
+ font-size:20px;
+}
+
+
+.exerciseActions{
+ display:grid;
+ grid-template-columns:repeat(4,1fr);
+ gap:8px;
+ margin-top:14px;
+}
+
+
+.exerciseActions button{
+ height:46px;
+ border:0;
+ border-radius:14px;
+ font-weight:900;
+ font-size:18px;
+}
+
+
+.actionHistory{
+ background:#202b44;
+ color:#9bb5ff;
+}
+
+
+.actionNote{
+ background:#3a2f12;
+ color:#ffd76a;
+}
+
+
+.actionTimer{
+ background:#193c2b;
+ color:#75eda8;
+ font-size:13px !important;
+}
+
+
+.actionLast{
+ background:#252c38;
+ color:white;
+}
+
+

@@ -364,13 +364,17 @@ function render(){
    </div>
 
 
-   <div class="last">
+   <div class="lastCard">
 
-    ${
-     last
-     ? "Ultimo carico: <strong>"+last+" kg</strong>"
-     : "Primo allenamento"
-    }
+    <small>ULTIMO CARICO</small>
+
+    <strong>
+     ${
+      last
+      ? last+" kg"
+      : "-"
+     }
+    </strong>
 
    </div>
 
@@ -378,34 +382,34 @@ function render(){
    ${sets}
 
 
-   <div class="exerciseButtons">
+   <div class="exerciseActions">
 
     <button
-     class="historyButton"
+     class="actionHistory"
      onclick="showExerciseHistory('${ex.name}','${currentDay}')"
     >
-     📈 Storico
+     📈
     </button>
 
     <button
-     class="noteButton"
+     class="actionNote"
      onclick="openExerciseNote('${currentDay}','${ex.name}')"
     >
-     📝 Note
+     📝
     </button>
 
     <button
-     class="timerButton"
+     class="actionTimer"
      onclick="startTimer(${ex.rest})"
     >
-     ⏱ ${ex.rest} sec
+     ⏱ ${ex.rest}
     </button>
 
     <button
-     class="lastButton"
+     class="actionLast"
      onclick="useLast(${i},${last || 0})"
     >
-     Usa ultimo
+     ↻
     </button>
 
    </div>
