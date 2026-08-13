@@ -728,3 +728,123 @@ transform:scale(.98);
  }
 
 }
+
+
+/* =========================
+   MODIFICA STORICO
+========================= */
+
+.editHistoryDay{
+ color:#8daaff;
+ font-size:11px;
+ font-weight:900;
+ letter-spacing:1px;
+ margin-bottom:5px;
+}
+
+.editHistoryActions{
+ display:grid;
+ grid-template-columns:1fr 1fr;
+ gap:10px;
+ margin-top:16px;
+}
+
+.editHistoryActions button{
+ min-height:46px;
+ border:0;
+ border-radius:14px;
+ font-weight:800;
+ font-size:14px;
+}
+
+.editWorkoutButton{
+ background:#253867;
+ color:#aec2ff;
+}
+
+.deleteWorkoutButton{
+ background:#4a2025;
+ color:#ff9da5;
+}
+
+.editBackButton{
+ width:100%;
+ min-height:46px;
+ margin-bottom:12px;
+ border:0;
+ border-radius:14px;
+ background:#252c38;
+ color:white;
+ font-weight:800;
+}
+
+.editSetHeader,
+.editSetRow{
+ display:grid;
+ grid-template-columns:38px 1fr 1fr;
+ gap:8px;
+ align-items:center;
+}
+
+.editSetHeader{
+ margin-top:16px;
+ margin-bottom:5px;
+ color:#7f8998;
+ font-size:11px;
+ text-align:center;
+ font-weight:800;
+}
+
+.editSetRow{
+ margin-bottom:8px;
+}
+
+.editSetRow > span{
+ text-align:center;
+ color:#8e99aa;
+ font-size:12px;
+}
+
+.editSetRow input{
+ min-height:46px;
+ border-radius:12px;
+ background:#0d1118;
+ border:1px solid #323a4a;
+ color:white;
+ padding:10px 12px;
+ font-size:17px;
+}
+
+.editSetRow input:focus{
+ outline:none;
+ border-color:#4c7dff;
+ box-shadow:
+  0 0 0 3px rgba(76,125,255,.12);
+}
+
+.editSaveActions{
+ display:grid;
+ grid-template-columns:1fr 2fr;
+ gap:10px;
+ margin-top:18px;
+ margin-bottom:110px;
+}
+
+.editSaveActions button{
+ min-height:52px;
+ border:0;
+ border-radius:15px;
+ font-weight:900;
+ font-size:14px;
+}
+
+.editCancelButton{
+ background:#252c38;
+ color:white;
+}
+
+.editSaveButton{
+ background:#4c7dff;
+ color:white;
+}
+

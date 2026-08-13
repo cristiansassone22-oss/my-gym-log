@@ -925,7 +925,7 @@ function showGif(src, name){
 }
 
 function setMobileNav(active){
- const ids = ["mobileScheda","mobileHistory","mobileProgress","mobileFavorites"];
+ const ids = ["mobileScheda","mobileHistory","mobileProgress","mobileFavorites","mobileEditHistory"];
 
  ids.forEach(id=>{
   const el=document.getElementById(id);
@@ -939,6 +939,10 @@ function setMobileNav(active){
 const _oldOpenDay = openDay;
 openDay = function(day){
  _oldOpenDay(day);
+
+ const saveButton = document.querySelector(".save");
+ if(saveButton) saveButton.style.display = "";
+
  setMobileNav("mobileScheda");
 };
 
@@ -1792,3 +1796,364 @@ async function importManualHistory(){
 }
 
 importManualHistory();
+
+
+/* =========================
+   MODIFICA STORICO
+========================= */
+
+function showEditHistory(){
+
+ const history =
+ JSON.parse(
+  localStorage.getItem("gymHistory") || "[]"
+ );
+
+ const content =
+ document.getElementById("content");
+
+ const saveButton =
+ document.querySelector(".save");
+
+ if(saveButton){
+  saveButton.style.display = "none";
+ }
+
+ document.querySelectorAll(".tabs button")
+ .forEach(b=>b.classList.remove("active"));
+
+ let html = `
+  <div class="titleBox">
+   <small>GESTIONE STORICO</small>
+   <h2>✏️ Modifica allenamenti</h2>
+   <p>${history.length} sessioni salvate</p>
+  </div>
+ `;
+
+ if(!history.length){
+
+  html += `
+   <div class="exercise">
+    <div class="exerciseBody">
+     <div class="last">
+      Nessun allenamento salvato.
+     </div>
+    </div>
+   </div>
+  `;
+
+  content.innerHTML = html;
+  setMobileNav("mobileEditHistory");
+  return;
+ }
+
+ history.forEach((session,index)=>{
+
+  const date =
+  new Date(session.date)
+  .toLocaleString("it-IT",{
+   dateStyle:"medium",
+   timeStyle:"short"
+  });
+
+  const completedExercises =
+  (session.exercises || [])
+  .filter(ex =>
+   (ex.sets || []).some(
+    set => set.kg || set.reps
+   )
+  ).length;
+
+  html += `
+   <div class="exercise editHistoryCard">
+
+    <div class="exerciseBody">
+
+     <div class="exerciseTop">
+
+      <div>
+       <div class="editHistoryDay">
+        GIORNO ${session.day}
+       </div>
+
+       <h3>${date}</h3>
+      </div>
+
+      <div class="prescription">
+       ${completedExercises} esercizi
+      </div>
+
+     </div>
+
+     <div class="editHistoryActions">
+
+      <button
+       class="editWorkoutButton"
+       onclick="editWorkout(${index})"
+      >
+       ✏️ Modifica
+      </button>
+
+      <button
+       class="deleteWorkoutButton"
+       onclick="deleteWorkout(${index})"
+      >
+       🗑️ Elimina
+      </button>
+
+     </div>
+
+    </div>
+
+   </div>
+  `;
+
+ });
+
+ content.innerHTML = html;
+
+ setMobileNav("mobileEditHistory");
+}
+
+
+function editWorkout(index){
+
+ const history =
+ JSON.parse(
+  localStorage.getItem("gymHistory") || "[]"
+ );
+
+ const session = history[index];
+
+ if(!session){
+  toast("Allenamento non trovato");
+  return;
+ }
+
+ const content =
+ document.getElementById("content");
+
+ const saveButton =
+ document.querySelector(".save");
+
+ if(saveButton){
+  saveButton.style.display = "none";
+ }
+
+ const date =
+ new Date(session.date)
+ .toLocaleString("it-IT",{
+  dateStyle:"medium",
+  timeStyle:"short"
+ });
+
+ let html = `
+  <div class="titleBox">
+   <small>MODIFICA ALLENAMENTO</small>
+   <h2>Giorno ${session.day}</h2>
+   <p>${date}</p>
+  </div>
+
+  <button
+   class="editBackButton"
+   onclick="showEditHistory()"
+  >
+   ← Torna allo storico
+  </button>
+ `;
+
+ (session.exercises || []).forEach(
+ (exercise,exerciseIndex)=>{
+
+  let setsHTML = "";
+
+  (exercise.sets || []).forEach(
+  (set,setIndex)=>{
+
+   setsHTML += `
+    <div class="editSetRow">
+
+     <span>
+      S${setIndex+1}
+     </span>
+
+     <input
+      type="text"
+      inputmode="decimal"
+      value="${escapeEditValue(set.kg)}"
+      placeholder="Kg"
+      data-edit-ex="${exerciseIndex}"
+      data-edit-set="${setIndex}"
+      data-edit-type="kg"
+     >
+
+     <input
+      type="text"
+      inputmode="numeric"
+      value="${escapeEditValue(set.reps)}"
+      placeholder="Rip."
+      data-edit-ex="${exerciseIndex}"
+      data-edit-set="${setIndex}"
+      data-edit-type="reps"
+     >
+
+    </div>
+   `;
+
+  });
+
+  html += `
+   <div class="exercise">
+
+    <div class="exerciseBody">
+
+     <div class="exerciseTop">
+      <h3>${exercise.name}</h3>
+     </div>
+
+     <div class="editSetHeader">
+      <span></span>
+      <span>Kg</span>
+      <span>Rip.</span>
+     </div>
+
+     ${setsHTML}
+
+    </div>
+
+   </div>
+  `;
+
+ });
+
+ html += `
+  <div class="editSaveActions">
+
+   <button
+    class="editCancelButton"
+    onclick="showEditHistory()"
+   >
+    Annulla
+   </button>
+
+   <button
+    class="editSaveButton"
+    onclick="saveEditedWorkout(${index})"
+   >
+    💾 Salva modifiche
+   </button>
+
+  </div>
+ `;
+
+ content.innerHTML = html;
+
+ window.scrollTo({
+  top:0,
+  behavior:"smooth"
+ });
+
+ setMobileNav("mobileEditHistory");
+}
+
+
+function escapeEditValue(value){
+
+ return String(value ?? "")
+ .replaceAll("&","&amp;")
+ .replaceAll('"',"&quot;")
+ .replaceAll("<","&lt;")
+ .replaceAll(">","&gt;");
+
+}
+
+
+function saveEditedWorkout(index){
+
+ const history =
+ JSON.parse(
+  localStorage.getItem("gymHistory") || "[]"
+ );
+
+ const session = history[index];
+
+ if(!session){
+  toast("Allenamento non trovato");
+  return;
+ }
+
+ (session.exercises || []).forEach(
+ (exercise,exerciseIndex)=>{
+
+  (exercise.sets || []).forEach(
+  (set,setIndex)=>{
+
+   const kgInput =
+   document.querySelector(
+    `[data-edit-ex="${exerciseIndex}"][data-edit-set="${setIndex}"][data-edit-type="kg"]`
+   );
+
+   const repsInput =
+   document.querySelector(
+    `[data-edit-ex="${exerciseIndex}"][data-edit-set="${setIndex}"][data-edit-type="reps"]`
+   );
+
+   if(kgInput){
+    set.kg = kgInput.value.trim();
+   }
+
+   if(repsInput){
+    set.reps = repsInput.value.trim();
+   }
+
+  });
+
+ });
+
+ history[index] = session;
+
+ localStorage.setItem(
+  "gymHistory",
+  JSON.stringify(history)
+ );
+
+ toast("Allenamento aggiornato ✓");
+
+ showEditHistory();
+}
+
+
+function deleteWorkout(index){
+
+ const history =
+ JSON.parse(
+  localStorage.getItem("gymHistory") || "[]"
+ );
+
+ const session = history[index];
+
+ if(!session) return;
+
+ const date =
+ new Date(session.date)
+ .toLocaleDateString("it-IT");
+
+ const confirmed =
+ confirm(
+  `Eliminare definitivamente il Giorno ${session.day} del ${date}?`
+ );
+
+ if(!confirmed) return;
+
+ history.splice(index,1);
+
+ localStorage.setItem(
+  "gymHistory",
+  JSON.stringify(history)
+ );
+
+ toast("Allenamento eliminato");
+
+ showEditHistory();
+}
+
