@@ -333,7 +333,7 @@ function render(){
 
    <img
     class="exercisePhoto"
-    src="${ex.photo}"
+    src="${ex.gif || ex.photo}"
     alt="${ex.name}"
     loading="lazy"
    >
