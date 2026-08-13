@@ -1324,3 +1324,71 @@ input:focus{
  color:#05160d;
 }
 
+
+
+/* =========================
+   WORKOUT SET COMPONENT
+========================= */
+
+
+.workSet{
+
+ display:grid;
+ grid-template-columns:38px 1fr 1fr 42px;
+ gap:8px;
+ align-items:center;
+
+ background:#111620;
+ padding:7px;
+ border-radius:15px;
+ margin-bottom:8px;
+
+}
+
+
+.workSetNumber{
+
+ color:#8d98aa;
+ font-size:13px;
+ font-weight:900;
+ text-align:center;
+
+}
+
+
+.workSetValue input{
+
+ width:100%;
+ height:42px;
+ min-height:42px;
+ padding:5px;
+ text-align:center;
+ background:#202837;
+ border:1px solid #323a4a;
+ border-radius:12px;
+ font-weight:800;
+
+}
+
+
+.workSetCheck{
+
+ height:42px;
+ width:42px;
+ border:0;
+ border-radius:12px;
+ background:#252c38;
+ color:white;
+ font-size:18px;
+ font-weight:900;
+
+}
+
+
+.workSetCheck.done{
+
+ background:#20c777;
+ color:#05160d;
+
+}
+

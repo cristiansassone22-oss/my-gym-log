@@ -261,6 +261,73 @@ function getLastWeight(name){
 }
 
 
+
+function renderSetRow(exIndex,setIndex){
+
+ return `
+
+ <div class="workSet">
+
+  <span class="workSetNumber">
+   S${setIndex+1}
+  </span>
+
+
+  <div class="workSetValue">
+
+   <input
+    type="number"
+    step="0.5"
+    inputmode="decimal"
+    placeholder="Kg"
+    data-ex="${exIndex}"
+    data-set="${setIndex}"
+    data-type="kg"
+   >
+
+  </div>
+
+
+  <div class="workSetValue">
+
+   <input
+    type="number"
+    inputmode="numeric"
+    placeholder="Rip."
+    data-ex="${exIndex}"
+    data-set="${setIndex}"
+    data-type="reps"
+   >
+
+  </div>
+
+
+  <button
+   class="workSetCheck"
+   onclick="toggleWorkSet(this)"
+  >
+   ○
+  </button>
+
+ </div>
+
+ `;
+
+}
+
+
+function toggleWorkSet(btn){
+
+ btn.classList.toggle("done");
+
+ btn.textContent =
+ btn.classList.contains("done")
+ ? "✓"
+ : "○";
+
+}
+
+
 /* RENDER */
 
 function render(){
