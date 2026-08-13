@@ -97,7 +97,7 @@ main{
 .exercisePhoto{
   width:100%;
   height:180px;
-  object-fit:cover;
+  object-fit:contain;
   display:block;
   background:#222;
 }
@@ -245,7 +245,7 @@ input{
 .exercisePhoto{
   width:100%;
   height:190px;
-  object-fit:cover;
+  object-fit:contain;
   display:block;
   cursor:pointer;
   background:#10131a;
