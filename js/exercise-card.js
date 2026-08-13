@@ -127,6 +127,10 @@ function renderExerciseCard(ex, i, last){
 
   <div class="exerciseActions">
 
+   <button onclick="useLast(${i},${last || 0})">
+    ↻
+   </button>
+
    <button onclick="showExerciseHistory('${ex.name}','${currentDay}')">
     📈
    </button>
