@@ -1287,3 +1287,40 @@ input:focus{
 }
 
 
+
+/* FIX SERIE COMPATTE */
+
+.premiumSet{
+ display:grid !important;
+ grid-template-columns:38px 1fr 1fr 42px !important;
+ gap:8px !important;
+ padding:6px !important;
+ background:#111620;
+ border-radius:14px;
+}
+
+.compactInput{
+ height:42px !important;
+ min-height:42px !important;
+ padding:6px !important;
+ text-align:center;
+ font-size:16px !important;
+ background:#202837 !important;
+}
+
+.setDone{
+ display:flex !important;
+ align-items:center;
+ justify-content:center;
+ height:42px !important;
+ width:42px !important;
+ background:#252c38;
+ color:white;
+ border-radius:12px;
+}
+
+.setDone.done{
+ background:#20c777;
+ color:#05160d;
+}
+
