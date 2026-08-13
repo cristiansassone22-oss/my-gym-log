@@ -693,7 +693,10 @@ function saveWorkout(){
 
    data.sets.push({
     kg,
-    reps
+    reps,
+    completed:
+     JSON.parse(localStorage.getItem("completedSets") || "{}")
+      [currentDay]?.[exercise.name]?.includes(s) || false
    });
 
   }
