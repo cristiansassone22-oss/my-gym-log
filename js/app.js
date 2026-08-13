@@ -383,6 +383,13 @@ function render(){
      </button>
 
      <button
+      class="noteButton"
+      onclick="openExerciseNote('${currentDay}','${ex.name}')"
+     >
+      📝 Note
+     </button>
+
+     <button
       class="timerButton"
       onclick="startTimer(${ex.rest})"
      >
@@ -1152,4 +1159,121 @@ function showExerciseHistory(name, day){
  content.innerHTML = html;
 
  setMobileNav("mobileScheda");
+}
+
+
+function noteStorageKey(day, name){
+ return `gymNote::${day}::${name}`;
+}
+
+function openExerciseNote(day, name){
+
+ const old = document.getElementById("noteModal");
+ if(old) old.remove();
+
+ const saved =
+ localStorage.getItem(
+  noteStorageKey(day, name)
+ ) || "";
+
+ const modal =
+ document.createElement("div");
+
+ modal.id = "noteModal";
+ modal.className = "noteModal";
+
+ modal.innerHTML = `
+  <div class="notePanel">
+
+   <div class="noteHeader">
+
+    <div>
+     <div class="noteEyebrow">
+      GIORNO ${day} · NOTE
+     </div>
+
+     <h3>${name}</h3>
+    </div>
+
+    <button
+     class="noteClose"
+     onclick="closeExerciseNote()"
+    >
+     ✕
+    </button>
+
+   </div>
+
+   <textarea
+    id="exerciseNoteText"
+    class="noteTextarea"
+    placeholder="Scrivi una nota per questo esercizio..."
+   ></textarea>
+
+   <div class="noteActions">
+
+    <button
+     class="noteCancel"
+     onclick="closeExerciseNote()"
+    >
+     Annulla
+    </button>
+
+    <button
+     class="noteSave"
+     onclick="saveExerciseNote('${day}','${name}')"
+    >
+     Salva
+    </button>
+
+   </div>
+
+  </div>
+ `;
+
+ document.body.appendChild(modal);
+
+ document.getElementById(
+  "exerciseNoteText"
+ ).value = saved;
+
+ modal.addEventListener(
+  "click",
+  e=>{
+   if(e.target === modal){
+    closeExerciseNote();
+   }
+  }
+ );
+
+ setTimeout(()=>{
+  document.getElementById(
+   "exerciseNoteText"
+  )?.focus();
+ },50);
+
+}
+
+function saveExerciseNote(day, name){
+
+ const text =
+ document.getElementById(
+  "exerciseNoteText"
+ )?.value || "";
+
+ localStorage.setItem(
+  noteStorageKey(day, name),
+  text.trim()
+ );
+
+ closeExerciseNote();
+
+ toast("Nota salvata ✓");
+
+}
+
+function closeExerciseNote(){
+ document.getElementById(
+  "noteModal"
+ )?.remove();
 }

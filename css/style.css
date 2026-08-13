@@ -551,3 +551,115 @@ transform:scale(.98);
  color:#72eba5;
 }
 
+
+
+/* NOTE ESERCIZIO */
+
+.noteButton{
+ background:#3a2f12;
+ color:#ffd76a;
+ border:0;
+ border-radius:13px;
+ min-height:44px;
+ font-weight:800;
+}
+
+.noteModal{
+ position:fixed;
+ inset:0;
+ z-index:100000;
+ display:flex;
+ align-items:flex-end;
+ justify-content:center;
+ padding:
+  16px
+  12px
+  calc(16px + env(safe-area-inset-bottom));
+ background:rgba(5,7,11,.78);
+ backdrop-filter:blur(14px);
+ -webkit-backdrop-filter:blur(14px);
+}
+
+.notePanel{
+ width:100%;
+ max-width:520px;
+ background:#151922;
+ border:1px solid #2a3241;
+ border-radius:22px;
+ padding:16px;
+ box-shadow:0 24px 70px rgba(0,0,0,.5);
+}
+
+.noteHeader{
+ display:flex;
+ align-items:flex-start;
+ justify-content:space-between;
+ gap:12px;
+ margin-bottom:14px;
+}
+
+.noteHeader h3{
+ margin:4px 0 0;
+ font-size:19px;
+}
+
+.noteEyebrow{
+ color:#8daaff;
+ font-size:11px;
+ font-weight:900;
+ letter-spacing:1px;
+}
+
+.noteClose{
+ width:38px;
+ height:38px;
+ border:0;
+ border-radius:12px;
+ background:#252c38;
+ color:white;
+ font-size:16px;
+}
+
+.noteTextarea{
+ width:100%;
+ min-height:150px;
+ resize:vertical;
+ border:1px solid #323a4a;
+ border-radius:14px;
+ background:#0d1118;
+ color:white;
+ padding:14px;
+ font:inherit;
+ font-size:16px;
+ line-height:1.45;
+ outline:none;
+}
+
+.noteTextarea:focus{
+ border-color:#4c7dff;
+ box-shadow:0 0 0 3px rgba(76,125,255,.14);
+}
+
+.noteActions{
+ display:grid;
+ grid-template-columns:1fr 1fr;
+ gap:10px;
+ margin-top:12px;
+}
+
+.noteActions button{
+ min-height:48px;
+ border:0;
+ border-radius:14px;
+ font-weight:800;
+}
+
+.noteCancel{
+ background:#252c38;
+ color:white;
+}
+
+.noteSave{
+ background:#4c7dff;
+ color:white;
+}
