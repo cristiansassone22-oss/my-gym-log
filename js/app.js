@@ -2962,3 +2962,131 @@ function generateProPDF(){
 
 }
 
+
+
+/* =========================
+   STATISTICHE ALLENAMENTO
+========================= */
+
+function calculateWorkoutStats(session){
+
+ let totalVolume=0;
+ let bestSet=null;
+
+
+ session.exercises.forEach(ex=>{
+
+  ex.sets.forEach(set=>{
+
+   const kg=parseFloat(set.kg);
+   const reps=parseFloat(set.reps);
+
+   if(!isNaN(kg) && !isNaN(reps)){
+
+    const volume=kg*reps;
+
+    totalVolume+=volume;
+
+
+    if(
+     !bestSet ||
+     volume > bestSet.volume
+    ){
+
+     bestSet={
+      exercise:ex.name,
+      kg:kg,
+      reps:reps,
+      volume:volume
+     };
+
+    }
+
+   }
+
+  });
+
+ });
+
+
+ return {
+  volume:Math.round(totalVolume),
+  bestSet
+ };
+
+}
+
+
+
+function getWorkoutProgress(sessionIndex){
+
+ const history =
+ JSON.parse(
+  localStorage.getItem("gymHistory") || "[]"
+ );
+
+
+ const current =
+ history[sessionIndex];
+
+
+ if(!current) return null;
+
+
+ const previous =
+ history[sessionIndex+1];
+
+
+ if(!previous) return [];
+
+
+ let result=[];
+
+
+ current.exercises.forEach(ex=>{
+
+  const old =
+  previous.exercises.find(
+   e=>e.name===ex.name
+  );
+
+
+  if(!old) return;
+
+
+  const currentMax=Math.max(
+   ...ex.sets
+    .map(s=>parseFloat(s.kg))
+    .filter(n=>!isNaN(n)),
+   0
+  );
+
+
+  const oldMax=Math.max(
+   ...old.sets
+    .map(s=>parseFloat(s.kg))
+    .filter(n=>!isNaN(n)),
+   0
+  );
+
+
+  if(currentMax){
+
+   result.push({
+
+    name:ex.name,
+
+    difference:
+    currentMax-oldMax
+
+   });
+
+  }
+
+ });
+
+
+ return result;
+
+}
+
