@@ -872,3 +872,10 @@ transform:scale(.98);
  cursor:pointer;
 }
 
+
+
+#pauseTimerButton{
+ background:#3a3219;
+ color:#ffd76a;
+}
+

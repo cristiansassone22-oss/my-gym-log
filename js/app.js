@@ -478,6 +478,8 @@ function startTimer(seconds){
 
  document.body.appendChild(overlay);
 
+ keepScreenAwake();
+
  function renderTimer(){
   const min = Math.floor(remaining / 60);
   const sec = remaining % 60;
@@ -502,6 +504,10 @@ function startTimer(seconds){
  renderTimer();
 
  timerInterval = setInterval(()=>{
+
+  if(timerPaused){
+   return;
+  }
 
   remaining--;
 
@@ -3211,6 +3217,58 @@ function getWorkoutProgress(sessionIndex){
 
 
  return result;
+
+}
+
+
+
+let timerPaused=false;
+
+function pauseTimer(){
+
+ timerPaused = !timerPaused;
+
+ const btn =
+ document.getElementById("pauseTimerButton");
+
+ if(btn){
+  btn.textContent =
+  timerPaused
+  ? "▶ Riprendi"
+  : "⏸ Pausa";
+ }
+
+}
+
+
+function keepScreenAwake(){
+
+ if(
+  "wakeLock" in navigator &&
+  !window.timerWakeLock
+ ){
+
+  navigator.wakeLock
+  .request("screen")
+  .then(lock=>{
+    window.timerWakeLock=lock;
+  })
+  .catch(()=>{});
+
+ }
+
+}
+
+
+function releaseScreenAwake(){
+
+ if(window.timerWakeLock){
+
+  window.timerWakeLock.release();
+
+  window.timerWakeLock=null;
+
+ }
 
 }
 
