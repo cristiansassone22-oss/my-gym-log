@@ -1,0 +1,7 @@
+
+# Nutrition database sources
+data/nutrition/source/
+data/nutrition/foods.json
+data/nutrition/foods-optimized.json
+data/nutrition/foods-mobile.json
+
