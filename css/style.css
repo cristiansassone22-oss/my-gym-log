@@ -1392,3 +1392,25 @@ input:focus{
 
 }
 
+
+.foodResultsList{
+ max-height:320px;
+ overflow-y:auto;
+ padding:10px;
+}
+
+.foodCard{
+ border:1px solid rgba(255,255,255,.15);
+ cursor:pointer;
+}
+
+.foodTitle{
+ font-size:16px;
+ font-weight:600;
+}
+
+.foodInfo{
+ margin-top:8px;
+ font-size:13px;
+ opacity:.75;
+}

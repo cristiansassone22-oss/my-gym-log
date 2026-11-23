@@ -194,7 +194,8 @@ C:{
 
 };
 
-let currentDay="A";
+const lastWorkoutDay = localStorage.getItem("workoutDraftDay");
+let currentDay = Object.hasOwn(workouts, lastWorkoutDay) ? lastWorkoutDay : "A";
 let timerInterval=null;
 
 
@@ -217,6 +218,7 @@ if("caches" in window){
 function openDay(day){
 
  currentDay=day;
+ localStorage.setItem("workoutDraftDay", day);
 
  document.querySelectorAll(".tabs button")
   .forEach(b=>b.classList.remove("active"));
@@ -225,6 +227,9 @@ function openDay(day){
   .classList.add("active");
 
  render();
+
+ document.querySelector(".save").style.display = "";
+ setMobileNav("mobileScheda");
 
 }
 
@@ -489,6 +494,8 @@ function render(){
 
  });
 
+ restoreWorkoutDraft(content, currentDay, workout.exercises);
+
 }
 
 
@@ -510,6 +517,7 @@ function useLast(index,kg){
  )
  .forEach(input=>{
   input.value=kg;
+  input.dispatchEvent(new Event("input", {bubbles: true}));
  });
 
 }
@@ -648,12 +656,19 @@ function startTimer(seconds){
 
 function saveWorkout(){
 
- const workout=
- workouts[currentDay];
+ const content = document.getElementById("content");
+ if(!content.querySelector("input[data-ex][data-set][data-type]")) return;
+
+ const workout = workouts[currentDay];
+ const startedAt = getDraftWorkout()[currentDay]?.startedAt ?? Date.now();
 
  const session={
   date:new Date().toISOString(),
   day:currentDay,
+  duration:
+   Math.round(
+    (Date.now() - startedAt) / 60000
+   ),
   exercises:[]
  };
 
@@ -670,13 +685,13 @@ function saveWorkout(){
   for(let s=0;s<exercise.sets;s++){
 
    const kg=
-   document.querySelector(
+   content.querySelector(
     `[data-ex="${i}"][data-set="${s}"][data-type="kg"]`
    ).value;
 
 
    const reps=
-   document.querySelector(
+   content.querySelector(
     `[data-ex="${i}"][data-set="${s}"][data-type="reps"]`
    ).value;
 
@@ -696,12 +711,14 @@ function saveWorkout(){
  });
 
 
- let history=
- JSON.parse(
-  localStorage.getItem(
-   "gymHistory"
-  ) || "[]"
- );
+ if(!session.exercises.some(exercise=>
+  exercise.sets.some(set=>set.kg || set.reps)
+ )){
+  toast("Compila almeno una serie");
+  return;
+ }
+
+ const history = JSON.parse(localStorage.getItem("gymHistory") || "[]");
 
 
  history.unshift(
@@ -709,21 +726,17 @@ function saveWorkout(){
  );
 
 
- localStorage.setItem(
-  "gymHistory",
-  JSON.stringify(history)
- );
+ try{
+  localStorage.setItem("gymHistory", JSON.stringify(history));
+ }catch(error){
+  console.error("Errore durante il salvataggio dell'allenamento:", error);
+  toast("Salvataggio non riuscito. Riprova.");
+  return;
+ }
 
-
- toast(
-  "Allenamento salvato ✓"
- );
-
-
- setTimeout(
-  render,
-  500
- );
+ clearWorkoutDraft(currentDay, workout.exercises);
+ render();
+ toast("Allenamento salvato ✓");
 
 }
 
@@ -1053,7 +1066,7 @@ function showProgress(){
 }
 
 
-openDay("A");
+openDay(currentDay);
 
 
 function showGif(src, name){
@@ -1124,7 +1137,7 @@ function showGif(src, name){
 }
 
 function setMobileNav(active){
- const ids = ["mobileScheda","mobileHistory","mobileProgress","mobileFavorites","mobileMore"];
+ const ids = ["mobileScheda","mobileHistory","mobileProgress","mobileNutrition","mobileFavorites","mobileMore"];
 
  ids.forEach(id=>{
   const el=document.getElementById(id);
@@ -1135,19 +1148,10 @@ function setMobileNav(active){
  if(current) current.classList.add("active");
 }
 
-const _oldOpenDay = openDay;
-openDay = function(day){
- _oldOpenDay(day);
-
- const saveButton = document.querySelector(".save");
- if(saveButton) saveButton.style.display = "";
-
- setMobileNav("mobileScheda");
-};
-
 const _oldShowHistory = showHistory;
 showHistory = function(){
  _oldShowHistory();
+ document.querySelector(".save").style.display = "none";
  setMobileNav("mobileHistory");
 };
 
@@ -1375,6 +1379,7 @@ function showExerciseHistory(name, day){
 
  content.innerHTML = html;
 
+ document.querySelector(".save").style.display = "none";
  setMobileNav("mobileScheda");
 }
 
