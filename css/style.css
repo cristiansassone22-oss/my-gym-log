@@ -1440,3 +1440,174 @@ input:focus{
  color:var(--muted);
  margin-top:3px;
 }
+
+.nutritionMetrics{
+ list-style:none;
+ padding:0;
+ margin:12px 0;
+ display:grid;
+ gap:12px;
+}
+
+.nutritionMetricHeading{
+ display:flex;
+ justify-content:space-between;
+ flex-wrap:wrap;
+ gap:4px 10px;
+}
+
+.nutritionMetrics progress{
+ display:block;
+ width:100%;
+ height:8px;
+ margin:6px 0 3px;
+ accent-color:var(--blue);
+}
+
+.nutritionMetrics small{
+ color:var(--muted);
+}
+
+.nutritionTargets summary{
+ color:#b7c8ff;
+ cursor:pointer;
+ font-weight:700;
+ padding:8px 0;
+}
+
+.nutritionTargetFields{
+ display:grid;
+ grid-template-columns:repeat(2,minmax(0,1fr));
+ gap:10px;
+ margin:12px 0;
+}
+
+.nutritionTargetFields input{
+ display:block;
+ width:100%;
+}
+
+.nutritionDayControls{
+ display:grid;
+ grid-template-columns:auto minmax(0,1fr) auto auto;
+ align-items:center;
+ gap:6px;
+ margin-top:12px;
+}
+
+.nutritionDayControls input{
+ min-width:0;
+ width:100%;
+ color-scheme:dark;
+}
+
+.nutritionDayControls button{
+ min-width:40px;
+ min-height:44px;
+ padding:6px 10px;
+ border:1px solid var(--border);
+ border-radius:12px;
+ color:var(--text);
+ background:var(--card);
+ font-weight:700;
+ cursor:pointer;
+}
+
+.nutritionDayControls button:disabled{
+ opacity:.5;
+ cursor:default;
+}
+
+#nutritionDiet summary{
+ color:#b7c8ff;
+ cursor:pointer;
+ font-weight:700;
+}
+
+#nutritionDietForm{
+ margin-top:12px;
+}
+
+#nutritionDietFiles{
+ display:block;
+ width:100%;
+ margin:10px 0;
+}
+
+#nutritionDietDocuments{
+ list-style:none;
+ padding:0;
+}
+
+#nutritionDietDocuments button{
+ overflow-wrap:anywhere;
+}
+
+#nutritionDietStatus:empty{
+ display:none;
+}
+
+.nutritionDietPreview{
+ width:min(92vw,720px);
+ max-height:90vh;
+ border:1px solid var(--border);
+ border-radius:16px;
+ padding:14px;
+ color:var(--text);
+ background:var(--card);
+}
+
+.nutritionDietPreview::backdrop{
+ background:rgba(0,0,0,.75);
+}
+
+.nutritionDietPreviewHeader{
+ display:flex;
+ justify-content:space-between;
+ align-items:start;
+ gap:12px;
+ overflow-wrap:anywhere;
+}
+
+.nutritionDietPreviewHeader button{
+ padding:0 12px;
+}
+
+#nutritionDietPreviewBody img,
+#nutritionDietPreviewBody iframe{
+ display:block;
+ width:100%;
+ border:0;
+ margin-bottom:12px;
+}
+
+#nutritionDietPreviewBody iframe{
+ height:58vh;
+}
+
+#nutritionDietDownload{
+ text-align:center;
+ text-decoration:none;
+}
+
+.nutritionManualButton{
+ margin-top:12px;
+}
+
+#foodResults button.foodCard{
+ display:block;
+ width:100%;
+ color:var(--text);
+ background:#151b2b;
+ border-radius:16px;
+ padding:14px;
+ margin:10px 0;
+ text-align:left;
+ font:inherit;
+ overflow-wrap:anywhere;
+}
+
+#foodResults .foodTitle,
+#foodResults .foodInfo{
+ display:block;
+}

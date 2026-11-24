@@ -5,7 +5,7 @@ let nutritionDatabase=[];
 async function loadNutritionDatabase(){
 
  const response =
- await fetch("data/nutrition/foods.json.gz?v=20261124");
+ await fetch("data/nutrition/foods.json.gz?v=20261124-5");
 
 
  const blob =
@@ -42,12 +42,32 @@ function cleanFoodName(name){
  return name
  .toLowerCase()
  .replace(/[’‘]/g,"'")
- .replace(/[0-9]/g,"")
  .trim();
 
 }
 
 
+
+function readCustomNutritionFoods(){
+ return JSON.parse(localStorage.getItem("nutritionCustomFoods") || "[]");
+}
+
+function saveCustomNutritionFood(name, per100g){
+ const foods = readCustomNutritionFoods();
+ const food = {
+  id: "custom_" + crypto.randomUUID(),
+  name,
+  per100g,
+  custom: true
+ };
+ foods.push(food);
+ localStorage.setItem("nutritionCustomFoods", JSON.stringify(foods));
+ return food;
+}
+
+function nutritionFoodLabel(food){
+ return food.custom ? food.name : translateFoodName(food.name);
+}
 
 function searchNutritionFood(query){
 
@@ -55,11 +75,12 @@ function searchNutritionFood(query){
  cleanFoodName(query);
 
 
- if(q.length < 2)
-  return [];
+ if(!q) return [];
 
+ const customFoods = readCustomNutritionFoods();
+ const foods = q.length > 1 ? [...customFoods, ...nutritionDatabase] : customFoods;
 
- return nutritionDatabase
+ return foods
 
  .filter(food=>{
 

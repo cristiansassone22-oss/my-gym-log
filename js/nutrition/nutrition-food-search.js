@@ -13,7 +13,7 @@ function openFoodSearch(meal){
 
   <h2>🔎 Cerca alimento</h2>
 
-  <p>${meal}</p>
+  <p>${nutritionMeals[meal]} · ${nutritionDateLabel(nutritionSelectedDate)}</p>
 
  </div>
 
@@ -32,6 +32,10 @@ function openFoodSearch(meal){
    >
 
 
+   <button id="manualFoodButton" class="backupButton nutritionManualButton" type="button">
+    Inserisci alimento manualmente
+   </button>
+
    <div id="foodResults" class="foodResultsList" role="region" aria-label="Risultati alimenti" tabindex="0"></div>
 
 
@@ -42,6 +46,9 @@ function openFoodSearch(meal){
  `;
 
  const searchInput = document.getElementById("foodSearchInput");
+ document.getElementById("manualFoodButton").addEventListener("click", ()=>{
+  openCustomFoodForm(meal, searchInput.value.trim());
+ });
 
  if(!nutritionReady){
   nutritionLoading.then(()=>{
@@ -61,65 +68,116 @@ function openFoodSearch(meal){
 
 
 function updateFoodResults(meal){
-
  const list = document.getElementById("foodResults");
- const query = document.getElementById("foodSearchInput").value;
+ const query = document.getElementById("foodSearchInput").value.trim();
 
-
- if(query.length < 3){
-
-  list.innerHTML="";
-
-  return;
-
- }
-
-
- if(!nutritionReady){
-  list.textContent = nutritionLoadFailed
-   ? "Catalogo non disponibile. Ricarica la pagina per riprovare."
-   : "Caricamento del catalogo…";
+ if(!query){
+  list.replaceChildren();
   return;
  }
 
  const results = searchNutritionFood(query);
+ if(!results.length){
+  list.textContent = nutritionReady ? "Nessun alimento trovato."
+   : nutritionLoadFailed ? "Catalogo non disponibile. Ricarica la pagina per riprovare."
+   : "Caricamento del catalogo…";
+  return;
+ }
 
-
-
- list.innerHTML =
-
- results.map(food=>`
-
-  <div class="foodCard"
-   style="background:#151b2b;padding:14px;margin:10px 0;border-radius:16px;display:block;"
-   onclick="selectNutritionFood('${food.id}','${meal}')">
-
-    <div class="foodTitle">
-     🥗 ${cleanDisplayFoodName(food.name)}
-    </div>
-
-    <div class="foodInfo">
-     ${food.per100g.kcal} kcal
-     • ${food.per100g.protein}g proteine
-     • ${food.per100g.carbs}g carbo
-    </div>
-
-  </div>
-
+ list.innerHTML = results.map(food=>`
+  <button type="button" class="foodCard" data-food-id="${escapeEditValue(food.id)}">
+   <span class="foodTitle">🥗 ${escapeEditValue(food.custom ? food.name : cleanDisplayFoodName(food.name))}</span>
+   <span class="foodInfo">
+    ${nutritionNumber.format(food.per100g.kcal)} kcal
+    • ${nutritionNumber.format(food.per100g.protein)} g proteine
+    • ${nutritionNumber.format(food.per100g.carbs)} g carbo
+    ${food.custom ? " • Personale" : ""}
+   </span>
+  </button>
  `).join("");
 
+ list.querySelectorAll("[data-food-id]").forEach(button=>{
+  button.addEventListener("click", ()=>selectNutritionFood(button.dataset.foodId, meal));
+ });
  list.scrollTop = 0;
-
 }
 
+function openCustomFoodForm(meal, initialName){
+ const content = document.getElementById("content");
 
+ content.innerHTML = `
+  <div class="titleBox">
+   <small>NUTRIZIONE</small>
+   <h2>Inserisci alimento manualmente</h2>
+   <p>${nutritionMeals[meal]} · ${nutritionDateLabel(nutritionSelectedDate)}</p>
+  </div>
+  <div class="exercise">
+   <form id="customFoodForm" class="exerciseBody">
+    <label for="customFoodName">Nome dell’alimento</label>
+    <input id="customFoodName" name="foodName" type="text" required placeholder="Es. Yogurt greco – marca">
+    <h3>Valori per 100 g</h3>
+    <div class="nutritionTargetFields">
+     ${Object.entries(nutritionMetrics).map(([key, {label, unit}])=>`
+      <label>${label} (${unit})
+       <input type="number" name="${key}" inputmode="decimal" min="0" step="any" required>
+      </label>
+     `).join("")}
+    </div>
+    <button class="backupButton" type="submit">Salva nel catalogo</button>
+    <button id="customFoodBack" class="backupButton" type="button">Torna alla ricerca</button>
+   </form>
+  </div>
+ `;
+
+ const form = document.getElementById("customFoodForm");
+ const nameInput = document.getElementById("customFoodName");
+ nameInput.value = initialName;
+ nameInput.addEventListener("input", ()=>nameInput.setCustomValidity(""));
+ document.getElementById("customFoodBack").addEventListener("click", ()=>openFoodSearch(meal));
+
+ form.addEventListener("submit", event=>{
+  event.preventDefault();
+  const name = nameInput.value.trim();
+
+  if(!name){
+   nameInput.setCustomValidity("Inserisci il nome dell’alimento.");
+   nameInput.reportValidity();
+   return;
+  }
+
+  const per100g = {};
+  for(const key of Object.keys(nutritionMetrics)){
+   const input = form.elements.namedItem(key);
+   const value = input.valueAsNumber;
+   if(!Number.isFinite(value) || value < 0){
+    toast("Controlla i valori per 100 g");
+    input.focus();
+    return;
+   }
+   per100g[key] = value;
+  }
+
+  let food;
+  try{
+   food = saveCustomNutritionFood(name, per100g);
+  }catch(error){
+   console.error("Errore durante il salvataggio dell’alimento personale:", error);
+   toast("Salvataggio non riuscito. Riprova.");
+   return;
+  }
+
+  selectNutritionFood(food.id, meal);
+  toast("Alimento salvato nel catalogo ✓");
+ });
+
+ window.scrollTo(0, 0);
+}
 
 function selectNutritionFood(foodId, meal){
 
  const food =
- nutritionDatabase.find(
-  f=>f.id===foodId
- );
+ readCustomNutritionFoods().find(food=>food.id === foodId)
+ ?? nutritionDatabase.find(food=>food.id === foodId);
 
 
  if(!food || !Object.hasOwn(nutritionMeals, meal)) return;
@@ -135,9 +193,9 @@ function selectNutritionFood(foodId, meal){
 
   <small>NUTRIZIONE</small>
 
-  <h2>${translateFoodName(food.name)}</h2>
+  <h2>${escapeEditValue(nutritionFoodLabel(food))}</h2>
 
-  <p>${meal}</p>
+  <p>${nutritionMeals[meal]} · ${nutritionDateLabel(nutritionSelectedDate)}</p>
 
  </div>
 
@@ -164,13 +222,13 @@ function selectNutritionFood(foodId, meal){
    <h3>Valori per 100g</h3>
 
 
-   <p>🔥 ${food.per100g.kcal} kcal</p>
+   <p>🔥 ${nutritionNumber.format(food.per100g.kcal)} kcal</p>
 
-   <p>🥩 ${food.per100g.protein} g proteine</p>
+   <p>🥩 ${nutritionNumber.format(food.per100g.protein)} g proteine</p>
 
-   <p>🍚 ${food.per100g.carbs} g carboidrati</p>
+   <p>🍚 ${nutritionNumber.format(food.per100g.carbs)} g carboidrati</p>
 
-   <p>🥑 ${food.per100g.fat} g grassi</p>
+   <p>🥑 ${nutritionNumber.format(food.per100g.fat)} g grassi</p>
 
 
    <button class="backupButton" type="submit">
@@ -184,6 +242,7 @@ function selectNutritionFood(foodId, meal){
 
  `;
 
+ const day = nutritionSelectedDate;
  const form = document.getElementById("foodPortion");
  const quantity = document.getElementById("foodGrams");
 
@@ -198,14 +257,14 @@ function selectNutritionFood(foodId, meal){
   }
 
   try{
-   saveNutritionPortion(food, meal, grams);
+   saveNutritionPortion(food, meal, grams, day);
   }catch(error){
    console.error("Errore durante il salvataggio dell'alimento:", error);
    toast("Salvataggio non riuscito. Riprova.");
    return;
   }
 
-  openNutrition();
+  openNutrition(day);
   toast("Alimento aggiunto ✓");
  });
 
