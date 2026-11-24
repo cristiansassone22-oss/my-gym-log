@@ -5,7 +5,7 @@ let nutritionDatabase=[];
 async function loadNutritionDatabase(){
 
  const response =
- await fetch("data/nutrition/foods.json.gz");
+ await fetch("data/nutrition/foods.json.gz?v=20261124");
 
 
  const blob =
@@ -41,6 +41,7 @@ function cleanFoodName(name){
 
  return name
  .toLowerCase()
+ .replace(/[’‘]/g,"'")
  .replace(/[0-9]/g,"")
  .trim();
 
@@ -65,7 +66,7 @@ function searchNutritionFood(query){
   const name =
   cleanFoodName(food.name);
 
-  return name.includes(q);
+  return name.includes(q) || food.aliases?.some(alias=>cleanFoodName(alias).includes(q));
 
  })
 

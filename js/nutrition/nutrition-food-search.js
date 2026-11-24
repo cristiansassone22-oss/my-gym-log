@@ -25,12 +25,14 @@ function openFoodSearch(meal){
 
    <input
     id="foodSearchInput"
+    type="search"
+    enterkeyhint="done"
     placeholder="Cerca alimento..."
     oninput="updateFoodResults('${meal}')"
    >
 
 
-   <div id="foodResults" class="foodResultsList"></div>
+   <div id="foodResults" class="foodResultsList" role="region" aria-label="Risultati alimenti" tabindex="0"></div>
 
 
   </div>
@@ -39,19 +41,27 @@ function openFoodSearch(meal){
 
  `;
 
-}
+ const searchInput = document.getElementById("foodSearchInput");
+ searchInput.addEventListener("keydown", event=>{
+  if(event.key === "Enter"){
+   event.preventDefault();
+   searchInput.blur();
+  }
+ });
 
+ window.scrollTo(0, 0);
+}
 
 
 function updateFoodResults(meal){
 
- const query =
- document.getElementById("foodSearchInput").value;
+ const list = document.getElementById("foodResults");
+ const query = document.getElementById("foodSearchInput").value;
 
 
  if(query.length < 3){
 
-  document.getElementById("foodResults").innerHTML="";
+  list.innerHTML="";
 
   return;
 
@@ -63,7 +73,7 @@ function updateFoodResults(meal){
 
 
 
- document.getElementById("foodResults").innerHTML =
+ list.innerHTML =
 
  results.map(food=>`
 
@@ -85,6 +95,8 @@ function updateFoodResults(meal){
 
  `).join("");
 
+ list.scrollTop = 0;
+
 }
 
 
@@ -97,7 +109,7 @@ function selectNutritionFood(foodId, meal){
  );
 
 
- if(!food) return;
+ if(!food || !Object.hasOwn(nutritionMeals, meal)) return;
 
 
  const content =
@@ -119,15 +131,18 @@ function selectNutritionFood(foodId, meal){
 
  <div class="exercise">
 
-  <div class="exerciseBody">
+  <form id="foodPortion" class="exerciseBody">
 
 
-   <h3>Quantità</h3>
+   <h3><label for="foodGrams">Quantità in grammi</label></h3>
 
 
    <input
     id="foodGrams"
     type="number"
+    inputmode="decimal"
+    step="any"
+    required
     value="100"
     placeholder="Grammi"
    >
@@ -145,19 +160,44 @@ function selectNutritionFood(foodId, meal){
    <p>🥑 ${food.per100g.fat} g grassi</p>
 
 
-   <button>
-    Aggiungi a ${meal}
+   <button class="backupButton" type="submit">
+    Aggiungi a ${meal === "spuntino1" ? "spuntino" : meal}
    </button>
 
 
-  </div>
+  </form>
 
  </div>
 
  `;
 
-}
+ const form = document.getElementById("foodPortion");
+ const quantity = document.getElementById("foodGrams");
 
+ form.addEventListener("submit", event=>{
+  event.preventDefault();
+  const grams = quantity.valueAsNumber;
+
+  if(!Number.isFinite(grams) || grams <= 0){
+   toast("Inserisci una quantità maggiore di zero");
+   quantity.focus();
+   return;
+  }
+
+  try{
+   saveNutritionPortion(food, meal, grams);
+  }catch(error){
+   console.error("Errore durante il salvataggio dell'alimento:", error);
+   toast("Salvataggio non riuscito. Riprova.");
+   return;
+  }
+
+  openNutrition();
+  toast("Alimento aggiunto ✓");
+ });
+
+ window.scrollTo(0, 0);
+}
 
 
 function cleanDisplayFoodName(name){

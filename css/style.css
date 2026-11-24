@@ -1414,3 +1414,29 @@ input:focus{
  font-size:13px;
  opacity:.75;
 }
+
+#foodResults.foodResultsList{
+ overscroll-behavior-y:contain;
+ touch-action:pan-y;
+ -webkit-overflow-scrolling:touch;
+}
+
+#foodResults .foodCard{
+ flex-shrink:0;
+}
+
+.nutritionEntries{
+ list-style:none;
+ padding:0;
+ margin:12px 0;
+}
+
+.nutritionEntries li{
+ padding:8px 0;
+}
+
+.nutritionEntries small{
+ display:block;
+ color:var(--muted);
+ margin-top:3px;
+}
