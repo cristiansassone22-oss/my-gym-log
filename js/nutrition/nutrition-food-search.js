@@ -42,6 +42,13 @@ function openFoodSearch(meal){
  `;
 
  const searchInput = document.getElementById("foodSearchInput");
+
+ if(!nutritionReady){
+  nutritionLoading.then(()=>{
+   if(searchInput.isConnected) updateFoodResults(meal);
+  });
+ }
+
  searchInput.addEventListener("keydown", event=>{
   if(event.key === "Enter"){
    event.preventDefault();
@@ -68,8 +75,14 @@ function updateFoodResults(meal){
  }
 
 
- const results =
- searchNutritionFood(query);
+ if(!nutritionReady){
+  list.textContent = nutritionLoadFailed
+   ? "Catalogo non disponibile. Ricarica la pagina per riprovare."
+   : "Caricamento del catalogo…";
+  return;
+ }
+
+ const results = searchNutritionFood(query);
 
 
 

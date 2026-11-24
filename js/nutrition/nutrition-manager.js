@@ -1,4 +1,5 @@
 let nutritionReady = false;
+let nutritionLoadFailed = false;
 
 const nutritionMeals = {
  colazione: "☕ Colazione",
@@ -14,7 +15,10 @@ async function initNutrition(){
  nutritionReady = true;
 }
 
-initNutrition();
+const nutritionLoading = initNutrition().catch(error=>{
+ nutritionLoadFailed = true;
+ console.error("Errore durante il caricamento del catalogo alimenti:", error);
+});
 
 function readNutritionLog(){
  return JSON.parse(localStorage.getItem("nutritionLog") || "[]");
